@@ -58,8 +58,8 @@ const HeaderBar = () => {
                         <Link to="#" className="menu-bars">
                             <MenuItem onClick={handleClose}>My account</MenuItem>
                         </Link>
-                        <Link to="#" className="menu-bars">
-                            <MenuItem onClick={handleClose}>LogOut</MenuItem>
+                        <Link to="/login" className="menu-bars">
+                            <MenuItem onClick={handleClose}>Login</MenuItem>
                         </Link>
                     </Menu>
                 </IconButton>

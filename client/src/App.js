@@ -1,40 +1,62 @@
-import logo from "./logo.svg";
+
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 // Layout
-import HeaderBar from "./layout/HeaderBar";
 import { CssBaseline, Box, TextField } from "@mui/material";
 
-import SideBar from "./layout/SideBar";
 
 import FormProduct from "./components/FormProduct";
 import FormEditProduct from "./components/FormEditProduct";
+import Login from "./components/pages/auth/Login";
+import Register from "./components/pages/auth/Register";
+
+//admin
+import { HomePagesAdmin } from "./components/pages/admin/HomePagesAdmin";
+//user
+import { HomePagesUser } from "./components/pages/users/HomePagesUser";
+//route
+import AdminRoute from "./routes/AdminRoute";
+import UserRoute from "./routes/UserRoute";
+
+//pages
+
 
 function App() {
-  // javascript
-
   return (
-
     <BrowserRouter>
-      <>
-        <CssBaseline />
-        <div className="app">
-          <SideBar />
-          <main className="content">
-            <HeaderBar />
-            <div className="content_body">
-              <Box m="20px">
-                <Routes>
-                  <Route path="/admin/viewtable" element={<FormProduct />} />
-                  <Route path="/edit/:id" element={<FormEditProduct />} />
+      <CssBaseline />
+      <Routes>
+        {/* Registers and Login Routes */}
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
 
-                </Routes>
-              </Box>
-            </div>
-          </main>
-        </div>
-      </>
+        {/*User*/}
+        <Route path="/user/index" element={
+          <UserRoute>
+            <HomePagesUser />
+          </UserRoute>
+        } />
+
+
+        {/* Admin Routes */}
+
+        <Route path="/admin/viewtable" element={
+          <AdminRoute>
+            <FormProduct />
+          </AdminRoute>
+        } />
+        <Route path="/admin/index" element={
+          <AdminRoute>
+            <HomePagesAdmin />
+          </AdminRoute>
+        } />
+        <Route path="/edit/:id" element={
+          <AdminRoute>
+            <FormEditProduct />
+          </AdminRoute>
+        } />
+      </Routes>
     </BrowserRouter>
   );
 }
