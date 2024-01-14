@@ -6,12 +6,14 @@ const {
   create,
   update,
   remove,
+  listby
 } = require("../controllers/Product");
 
 const { auth } = require('../Middleware/auth')
 const { upload } = require('../Middleware/upload')
-router.get("/product", upload, list);
-router.get("/product/:id", upload, read);
+router.get("/product", list);
+router.post("/productby", listby);
+router.get("/product/:id", read);
 router.post("/product", upload, create);
 router.put("/product/:id", upload, update);
 router.delete("/product/:id", remove);

@@ -7,6 +7,13 @@ export const remove = async (id) =>
 export const create = async (data) =>
     await axios.post(process.env.REACT_APP_API + '/product', data)
 
+export const listby = async (limit, sort, order) =>
+    await axios.post(process.env.REACT_APP_API + '/productby', {
+        limit,
+        sort,
+        order
+    })
+
 export const getdata = async () => {
     return await axios.get(process.env.REACT_APP_API + '/product')
 }

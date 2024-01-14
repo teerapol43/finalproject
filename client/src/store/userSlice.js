@@ -2,17 +2,20 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     value: "j.s.power",
+    user: []
 }
 
 export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        login: (state) => {
+        login: (state, action) => {
             state.value = 'login'; // Update the state property
+            state.user = action.payload;
         },
         logout: (state) => {
-            state.value = 'logout'; // Update the state property
+            state.user = []
+            localStorage.clear()
         },
         incrementByAmount: (state, action) => {
             state.value += action.payload; // Update the state property

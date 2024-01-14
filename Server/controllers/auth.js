@@ -56,3 +56,16 @@ exports.login = async (req, res) => {
         res.status(500).send('login Error')
     }
 }
+
+exports.currentUser = async (req, res) => {
+    try {
+        console.log('currentUser', req.user);
+        const user = await User.findOne({ username: req.user.username })
+            .select('-password')
+            .exec()
+        res.send(user)
+    } catch (error) {
+        console.log(err);
+        res.status(500).send("currentUser err");
+    }
+}

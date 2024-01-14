@@ -16,6 +16,9 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 // function
 import { login } from "../../../functions/auth";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login as loginRedux } from "../../../store/userSlice";
+import { toast } from 'react-toastify';
 function Copyright(props) {
     return (
         <Typography
@@ -40,24 +43,32 @@ const defaultTheme = createTheme();
 
 export default function Login() {
     const navi = useNavigate()
+    const dispatch = useDispatch()
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-        const tam = {
+        const js = {
             username: data.get("username"),
             password: data.get("password"),
         };
 
-        login(tam)
+        login(js)
             .then(res => {
                 console.log(res)
-                alert(res.data)
+                toast.success('User ' + res.data.payload.user.username + ' Login Success');
+                dispatch(loginRedux({
+                    username: res.data.payload.user.username,
+                    role: res.data.payload.user.role,
+                    token: res.data.token
+                }))
+                localStorage.setItem('token', res.data.token);
                 roleRedirects(res.data.payload.user.role)
-            }).catch(err => console.log(err))
-    };
-
+            }).catch((err) => toast.error(err.response.data, {
+                position: 'top-left'
+            }));
+    }
     const roleRedirects = (role) => {
         if (role === 'admin') {
             navi('/admin/index');

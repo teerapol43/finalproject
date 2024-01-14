@@ -1,11 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import SideBar from '../layout/SideBar';
 import HeaderBar from '../layout/HeaderBar';
 import { Box } from '@mui/material';
-import { Routes } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { currentAdmin } from '../functions/auth';
+import NotFound404 from '../components/pages/NotFound404';
 
 const AdminRoute = ({ children }) => {
-    return (
+    const { user } = useSelector((state) => ({ ...state }));
+    const [pass, setpass] = useState(false);
+
+    useEffect(() => {
+        if (user && user.user.token) {
+            currentAdmin(user.user.token)
+                .then((res) => {
+                    setpass(true)
+                    // Perform actions with the response if needed
+                })
+                .catch((err) => {
+                    console.log(err)
+                    setpass(false)
+                });
+        }
+    }, [user]);
+
+    return pass ? (
         <div className="app">
             <SideBar />
             <main className="content">
@@ -17,7 +36,7 @@ const AdminRoute = ({ children }) => {
                 </div>
             </main>
         </div>
-    );
+    ) : <NotFound404 />
 };
 
-export default AdminRoute
+export default AdminRoute;

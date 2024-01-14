@@ -91,7 +91,7 @@ const SideBar = () => {
                                 </Box>
                             )}
 
-                            <Link className="menu-bars">
+                            <Link className="menu-bars" to={"/admin/index"}>
                                 <MenuItem icon={<HomeOutlinedIcon />}>Dashboard</MenuItem>
                             </Link>
 
@@ -111,26 +111,6 @@ const SideBar = () => {
                                 <MenuItem icon={<AdminPanelSettingsIcon />}> Admin</MenuItem>
                             </SubMenu>
                         </Menu>
-
-                        <div
-                            style={{
-                                padding: "0 24px",
-                                marginBottom: "8px",
-                                marginTop: "32px",
-                            }}
-                        >
-                            <Typography
-                                variant="body2"
-                                fontWeight={600}
-                                style={{
-                                    opacity: isCollapsed ? 0 : 0.5,
-                                    letterSpacing: "0.5px",
-                                }}
-                            >
-                                Extra
-                            </Typography>
-                        </div>
-
                         <Menu>
                             <MenuItem icon={<ShoppingCartIcon />}>Orders</MenuItem>
                         </Menu>

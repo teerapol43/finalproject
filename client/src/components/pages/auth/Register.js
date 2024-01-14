@@ -16,6 +16,9 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 // function
 import { register } from "../../../functions/auth";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function Copyright(props) {
     return (
         <Typography
@@ -44,19 +47,22 @@ export default function Register() {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-        const tam = {
+        const regis = {
             username: data.get("username"),
             password: data.get("password"),
         };
 
-        register(tam)
+        register(regis)
             .then(res => {
-                console.log(res)
-                alert(res.data)
-                navi('/login')
-            }).catch(err => console.log(err))
-    };
-
+                console.log(res);
+                toast.success(res.data); // Show success message
+                navi('/login');
+            })
+            .catch(err => {
+                console.log(err);
+                toast.error("Registration failed. Please try again."); // Show error message
+            });
+    }
     return (
         <ThemeProvider theme={defaultTheme}>
             <Grid container component="main" sx={{ height: "100vh" }}>
@@ -92,7 +98,7 @@ export default function Register() {
                             <LockOutlinedIcon />
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Sign Up
+                            Register
                         </Typography>
                         <Box
                             component="form"
@@ -129,7 +135,7 @@ export default function Register() {
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
                             >
-                                Sign Up
+                                register
                             </Button>
                             <Copyright sx={{ mt: 5 }} />
                         </Box>
