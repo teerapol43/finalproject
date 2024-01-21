@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { listby } from "../../functions/product";
+import { listProductBy } from "../../functions/product";
 import ProductCard from "../card/ProductCard";
 import LoadingCard from "../card/LoadingCard";
 
@@ -13,7 +13,7 @@ const ProductNew = () => {
 
     const loadData = async () => {
         try {
-            const res = await listby(4, "createAt", "asc");
+            const res = await listProductBy(4, "createAt", "asc");
             setProduct(res.data);
             setLoading(false)
         } catch (err) {

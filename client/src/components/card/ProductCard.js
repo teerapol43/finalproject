@@ -1,34 +1,33 @@
 import React from 'react';
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-import { Avatar, Card } from 'antd';
+import { EditOutlined, DeleteOutlined, SettingOutlined } from '@ant-design/icons';
+import { Card } from 'antd';  // Keep only one import statement for Card
+import { Link } from 'react-router-dom';
+
 const { Meta } = Card;
-const ProductCard = ({ data }) => {
-    console.log(data)
+
+const ProductCard = ({ product, handleRemove }) => {
+    const { _id, id, name, detail, images } = product;
+
     return (
         <Card
-            style={{
-                width: 300,
-                height: 400
-            }}
-            cover={
-                <img
-                    alt="example"
-                    src={'http://localhost:5000/uploads/' + data.file}
-                    style={{ width: '100%', height: 200 }}
-                />
-            }
+            hoverable
+            style={{ width: 240 }}
+            cover={<img
+                className='m-2'
+                style={{ height: "150px", objectFit: "cover" }}
+                alt="example" src={images && images.length ? images[0].url : ""} />}
             actions={[
-                <SettingOutlined key="setting" />,
-                <EditOutlined key="edit" />,
-                <EllipsisOutlined key="ellipsis" />,
+                <Link to={'/admin/update-product/' + _id}>
+                    <EditOutlined key="edit" className='text-warning' />
+                </Link>,
+                <DeleteOutlined
+                    onClick={() => handleRemove(_id)}
+                    key="delete" className='text-danger' />,
             ]}
         >
-            <Meta
-                title={data.name}
-                description={data.detail + " ราคา " + data.price}
-            />
+            <Meta title={name} description={detail} />
         </Card>
     );
 }
 
-export default ProductCard
+export default ProductCard;

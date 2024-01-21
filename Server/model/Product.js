@@ -1,23 +1,34 @@
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema
+const productSchema = new mongoose.Schema(
 
-const productSchema = mongoose.Schema(
-  {
-    id: {
-      type: Number,
+    {
+        id: {
+            type: Number,
+        },
+        name: {
+            type: String,
+            text: true, // Enable text indexing for the 'name' field
+        },
+        detail: {
+            type: String,
+        },
+        category: {
+            type: ObjectId,
+            ref: "category"
+        },
+        price: {
+            type: Number
+        },
+        images: {
+            type: Array,
+        },
+        sold: {
+            type: Number,
+            default: 0
+        }
     },
-    name: String,
-    detail: {
-      type: String,
-    },
-    file: {
-      type: String,
-      default: 'noimage.jpg'
-    },
-    price: {
-      type: Number
-    }
-  },
-  { timestamps: true }
+    { timestamps: true }
 );
 
 module.exports = mongoose.model("Product", productSchema);

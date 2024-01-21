@@ -1,81 +1,93 @@
 const Product = require("../model/Product");
-const fs = require('fs')
-exports.read = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const product = await Product.findOne({ _id: id }).exec();
-    res.send(product);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("Server Error");
-  }
-};
-
-exports.list = async (req, res) => {
-  try {
-    const products = await Product.find({}).exec();
-    res.send(products);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("Server Error");
-  }
-};
-exports.listby = async (req, res) => {
-  try {
-    const { limit, sort, order } = req.body;
-    const products = await Product.find({})
-      .limit(limit)
-      .sort([[sort, order]])
-      .exec();
-    res.send(products);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("Server Error");
-  }
-};
 
 exports.create = async (req, res) => {
   try {
-    var data = req.body
-    if (req.file) {
-      data.file = req.file.filename
-    }
-    console.log(data)
-    const product = await Product(data).save();
-    res.send(product);
+    console.log(req.body)
+    const product = await new Product(req.body).save()
+    res.send(product)
   } catch (err) {
-    console.log(err);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error Create Product!!!')
   }
-};
-
-exports.update = async (req, res) => {
+}
+exports.list = async (req, res) => {
   try {
-    const id = req.params.id;
-    const updated = await Product.findOneAndUpdate({ _id: id }, req.body, { new: true }).exec()
-    res.send(updated);
+    const count = parseInt(req.params.count)
+    const product = await Product.find()
+      .limit(count)
+      .populate('category')
+      .sort([["createdAt", "desc"]])
+    res.send(product)
   } catch (err) {
-    console.log(err);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error list Product!!!')
   }
-};
-
+}
 exports.remove = async (req, res) => {
   try {
-    const id = req.params.id;
-    const removed = await Product.findOneAndDelete({ _id: id }).exec();
-    if (removed?.file) {
-      await fs.unlink('./uploads' + removed.file, (err) => {
-        if (err) {
-          console.log(err)
-        } else {
-          console.log('Remove Success')
-        }
-      })
-    }
-    res.send(removed);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("Server Error");
+    const deleted = await Product.findOneAndRemove({ _id: req.params.id, })
+      .exec()
+    res.send(deleted)
+  } catch (error) {
+    res.status(500).send('Server Error Remove Product!!!')
   }
-};
+}
+exports.read = async (req, res) => {
+  try {
+    const product = await Product.findOne({ _id: req.params.id, })
+      .populate("category")
+      .exec()
+    res.send(product)
+  } catch (error) {
+    res.status(500).send('Server Error Read Product!!!')
+  }
+}
+exports.update = async (req, res) => {
+  try {
+    console.log(req.params.id); // Log product ID
+    console.log(req.body); // Log updated data
+    const product = await Product.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
+      .exec()
+    res.send(product)
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error Update Product!!!');
+  }
+}
+exports.listBy = async (req, res) => {
+  try {
+    const { sort, order, limit } = req.body
+    const product = await Product.find()
+      .limit(limit)
+      .populate('category')
+      .sort([[sort, order]])
+    res.send(product)
+  } catch (err) {
+    res.status(500).send('Server Error listBy Product!!!')
+  }
+}
+const handleQuery = async (req, res, query) => {
+  let products = await Product.find({ $text: { $search: query } })
+    .populate('category', '_id name')
+  res.send(products)
+}
+const handlePrice = async (req, res, price) => {
+  let products = await Product.find({
+    price: {
+      $gte: price[0],
+      $lte: price[1]
+    }
+  })
+    .populate('category', '_id name')
+  res.send(products)
+}
+
+exports.searchFilters = async (req, res) => {
+  const { query, price } = req.body;
+  console.log(query)
+  if (query) {
+    await handleQuery(req, res, query)
+  }
+  if (price !== undefined) {
+    console.log("price----", price)
+    await handlePrice(req, res, price)
+  }
+}

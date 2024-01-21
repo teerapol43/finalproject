@@ -19,7 +19,9 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import TableViewIcon from '@mui/icons-material/TableView';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import CategoryIcon from '@mui/icons-material/Category';
 import StoreIcon from '@mui/icons-material/Store';
+import InventoryIcon from '@mui/icons-material/Inventory';
 const SideBar = () => {
     const [isCollapsed, setisCollapsed] = useState(false);
     const [toggled, setToggled] = useState(false);
@@ -96,10 +98,26 @@ const SideBar = () => {
                             </Link>
 
                             <SubMenu icon={<MapOutlinedIcon />} label="Data">
-                                <Link to={"/admin/viewtable"} className="menu-bars">
+
+                                <Link to={"/admin/viewtable"} className="menu-bars"></Link>+
+
+                                <Link to={"/admin/create-product"} className="menu-bars">
+
                                     <MenuItem icon={<StoreIcon />}>
                                         {" "}
                                         Store
+                                    </MenuItem>
+                                </Link>
+                                <Link to={"/admin/product"} className="menu-bars">
+                                    <MenuItem icon={<InventoryIcon />}>
+                                        {" "}
+                                        product
+                                    </MenuItem>
+                                </Link>
+                                <Link to={"/admin/create-category"} className="menu-bars">
+                                    <MenuItem icon={<CategoryIcon />}>
+                                        {" "}
+                                        Category
                                     </MenuItem>
                                 </Link>
                             </SubMenu>

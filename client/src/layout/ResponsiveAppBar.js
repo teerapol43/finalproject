@@ -22,12 +22,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/userSlice";
 import { useNavigate } from "react-router-dom";
 
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Search from "../components/card/Search";
 const pages = [
-    {
-        title: "Product",
-        icon: "",
-        to: "/product",
-    },
     {
         title: "Service",
         icon: "",
@@ -39,6 +36,12 @@ const pages = [
         to: "/contract",
     },
 ];
+const shopPage = {
+    title: "Shop",
+    icon: <ShoppingCartIcon />,
+    to: "/shop", // Update with the correct path for your shop
+};
+
 const authen = [
     {
         title: "Register",
@@ -69,6 +72,7 @@ function ResponsiveAppBar() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     console.log(user)
+
     const handleLogout = () => {
         dispatch(logout());
         handleCloseUserMenu();
@@ -173,6 +177,42 @@ function ResponsiveAppBar() {
                     </Box>
                     {/* /Minimize Menu */}
 
+                    {/* Menu Right Full */}
+                    <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
+                        {user.user.length === 0 &&
+                            authen.map((page, index) => (
+                                <Link to={page.to}>
+                                    <Button
+                                        key={index}
+                                        onClick={handleCloseNavMenu}
+                                        sx={{
+                                            my: 2,
+                                            color: "white",
+                                            mr: 2,
+                                        }}
+                                        startIcon={page.icon}
+                                    >
+                                        {page.title}
+                                    </Button>
+                                </Link>
+                            ))}
+                        {/* Add the "Shop" menu item */}
+                        <Link to={shopPage.to}>
+                            <Button
+                                onClick={handleCloseNavMenu}
+                                sx={{
+                                    my: 2,
+                                    color: "white",
+                                    mr: 2,
+                                }}
+                                startIcon={shopPage.icon}
+                            >
+                                {shopPage.title}
+                            </Button>
+                        </Link>
+                    </Box>
+                    {/* /Menu Right Full */}
+
                     {/* LOGO Minimize */}
                     {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
                     <Typography
@@ -238,57 +278,63 @@ function ResponsiveAppBar() {
                     </Box>
                     {/* /Menu Right Full */}
 
+                    <Box sx={{ flexGrow: 0.2, display: { xs: "flex", md: "flex" }, float: "right" }}>
+                        <Search />
+                    </Box>
+
                     {/* User Menu */}
-                    {user.user.length != 0 && (
-                        <Box sx={{ flexGrow: 0 }}>
-                            <Tooltip title="Open settings">
-                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar
-                                        alt="Remy Sharp"
-                                        src="https://1.bp.blogspot.com/-gBFaZsSyZko/WbETftGiwKI/AAAAAAAAI9I/dEH4ueuWHAwDb-O4bbw3xCLJTzpAYqk9gCLcBGAs/s1600/11.jpg"
-                                    />
-                                </IconButton>
-                            </Tooltip>
-                            <Menu
-                                sx={{ mt: "45px" }}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
-                            >
-                                {settings.map((setting, index) => (
-                                    <MenuItem
-                                        key={index}
-                                        onClick={
-                                            setting.title == "Logout"
-                                                ? handleLogout
-                                                : handleCloseUserMenu
-                                        }
-                                    >
-                                        <Link to={setting.to} style={{ textDecoration: "none" }}>
-                                            <Typography textAlign="center">
-                                                {setting.title}
-                                            </Typography>
-                                        </Link>
-                                    </MenuItem>
-                                ))}
-                            </Menu>
-                        </Box>
-                    )}
+                    {
+                        user.user.length != 0 && (
+                            <Box sx={{ flexGrow: 0 }}>
+                                <Tooltip title="Open settings">
+                                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                        <Avatar
+                                            alt="Remy Sharp"
+                                            src="https://1.bp.blogspot.com/-gBFaZsSyZko/WbETftGiwKI/AAAAAAAAI9I/dEH4ueuWHAwDb-O4bbw3xCLJTzpAYqk9gCLcBGAs/s1600/11.jpg"
+                                        />
+                                    </IconButton>
+                                </Tooltip>
+                                <Menu
+                                    sx={{ mt: "45px" }}
+                                    id="menu-appbar"
+                                    anchorEl={anchorElUser}
+                                    anchorOrigin={{
+                                        vertical: "top",
+                                        horizontal: "right",
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: "top",
+                                        horizontal: "right",
+                                    }}
+                                    open={Boolean(anchorElUser)}
+                                    onClose={handleCloseUserMenu}
+                                >
+                                    {settings.map((setting, index) => (
+                                        <MenuItem
+                                            key={index}
+                                            onClick={
+                                                setting.title == "Logout"
+                                                    ? handleLogout
+                                                    : handleCloseUserMenu
+                                            }
+                                        >
+                                            <Link to={setting.to} style={{ textDecoration: "none" }}>
+                                                <Typography textAlign="center">
+                                                    {setting.title}
+                                                </Typography>
+                                            </Link>
+                                        </MenuItem>
+                                    ))}
+                                </Menu>
+                            </Box>
+                        )
+                    }
 
                     {/* /User Menu */}
-                </Toolbar>
-            </Container>
-        </AppBar>
+                </Toolbar >
+            </Container >
+        </AppBar >
     );
 }
 export default ResponsiveAppBar;

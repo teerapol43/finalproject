@@ -5,45 +5,47 @@ body,
 #root,
 .app,
 .content {
-  height: 100%;
-  width: 100%;
-  font-family: "Source Sans Pro", sans-serif;
-  background-color: #f7fff7;
-  overflow: hidden;
+    height: 100%;
+    width: 100%;
+    font-family: "Source Sans Pro", sans-serif;
+    background-color: #f7fff7;
+
+
+
 }
 
 .content_body {
-  background-color: rgb(223, 255, 216);
-  width: 100%;
-  height: 90%;
-  overflow: scroll;
+    background-color: rgb(223, 255, 216);
+    width: 100%;
+    height: 90%;
+    overflow: scroll;
 }
 
 .app {
-  display: flex;
-  position: relative;
+    display: flex;
+    position: relative;
 }
 
 .menu-bars {
-  text-decoration: none;
-  color: #000;
+    text-decoration: none;
+    color: #000;
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+    width: 10px;
 }
 
 
 ::-webkit-scrollbar-track {
-  background: #e0e0e0;
+    background: #e0e0e0;
 }
 
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
+    background: #888;
 }
 
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+    background: #555;
 }
