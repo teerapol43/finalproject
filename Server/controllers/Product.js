@@ -79,9 +79,13 @@ const handlePrice = async (req, res, price) => {
     .populate('category', '_id name')
   res.send(products)
 }
-
+const handleCategory = async (req, res, category) => {
+  let products = await Product.find({ category })
+    .populate('category', '_id name')
+  res.send(products)
+}
 exports.searchFilters = async (req, res) => {
-  const { query, price } = req.body;
+  const { query, price, category } = req.body;
   console.log(query)
   if (query) {
     await handleQuery(req, res, query)
@@ -89,5 +93,9 @@ exports.searchFilters = async (req, res) => {
   if (price !== undefined) {
     console.log("price----", price)
     await handlePrice(req, res, price)
+  }
+  if (category !== undefined) {
+    console.log("price----", category)
+    await handleCategory(req, res, category)
   }
 }

@@ -26,3 +26,9 @@ export const changeRole = async (authtoken, data) =>
             authtoken,
         },
     });
+export const userCart = async (authtoken, cart) =>
+    await axios.post(process.env.REACT_APP_API + "/user/cart", { cart }, {
+        headers: {
+            authtoken,
+        },
+    });

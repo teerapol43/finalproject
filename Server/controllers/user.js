@@ -38,4 +38,11 @@ exports.removeUser = async (req, res) => {
         res.status(500).send('Server Error Remove User!!!');
     }
 };
-
+exports.userCart = async (req, res) => {
+    try {
+        res.send('userCart ok')
+    } catch (error) {
+        console.log(err)
+        res.send(500).send('userCart Server Error')
+    }
+}

@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 // function
 import { login } from "../../../functions/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login as loginRedux } from "../../../store/userSlice";
 import { toast } from 'react-toastify';
@@ -44,7 +44,8 @@ const defaultTheme = createTheme();
 export default function Login() {
     const navi = useNavigate()
     const dispatch = useDispatch()
-
+    const location = useLocation()
+    console.log('lo', location)
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -70,10 +71,15 @@ export default function Login() {
             }));
     }
     const roleRedirects = (role) => {
-        if (role === 'admin') {
-            navi('/admin/index');
+        let intended = location.state
+        if (intended) {
+            navi('../' + intended)
         } else {
-            navi('/user/index');
+            if (role === 'admin') {
+                navi('/admin/index');
+            } else {
+                navi('/user/index');
+            }
         }
     }
     return (

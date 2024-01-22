@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-
+import { ShoppingOutlined } from '@ant-design/icons'
 import { Link } from "react-router-dom";
 
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
@@ -21,15 +21,10 @@ import LoginIcon from "@mui/icons-material/Login";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/userSlice";
 import { useNavigate } from "react-router-dom";
-
+import { Badge } from "antd"
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Search from "../components/card/Search";
 const pages = [
-    {
-        title: "Service",
-        icon: "",
-        to: "/service",
-    },
     {
         title: "Contract",
         icon: "",
@@ -38,8 +33,13 @@ const pages = [
 ];
 const shopPage = {
     title: "Shop",
-    icon: <ShoppingCartIcon />,
+    icon: <ShoppingOutlined />,
     to: "/shop", // Update with the correct path for your shop
+};
+const cartPage = {
+    title: "Cart",
+    icon: <ShoppingCartIcon />,
+    to: "/cart", // Update with the correct path for your shop
 };
 
 const authen = [
@@ -68,7 +68,7 @@ const settings = [
 ];
 
 function ResponsiveAppBar() {
-    const { user } = useSelector((state) => ({ ...state }));
+    const { user, cart } = useSelector((state) => ({ ...state }));
     const dispatch = useDispatch();
     const navigate = useNavigate();
     console.log(user)
@@ -208,6 +208,21 @@ function ResponsiveAppBar() {
                                 startIcon={shopPage.icon}
                             >
                                 {shopPage.title}
+                            </Button>
+                        </Link>
+                        <Link to={cartPage.to}>
+                            <Button
+                                onClick={handleCloseNavMenu}
+                                sx={{
+                                    my: 2,
+                                    color: "white",
+                                    mr: 2,
+                                }}
+                                startIcon={cartPage.icon}
+                            >
+                                <Badge count={cart.length} offset={[9, 0]}>
+                                    {cartPage.title}
+                                </Badge>
                             </Button>
                         </Link>
                     </Box>

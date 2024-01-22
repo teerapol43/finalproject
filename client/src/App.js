@@ -19,6 +19,7 @@ import NotFound404 from "./components/pages/NotFound404";
 import Login from "./components/pages/auth/Login";
 import Register from "./components/pages/auth/Register";
 
+
 // Admin
 import { HomePagesAdmin } from "./components/pages/admin/HomePagesAdmin";
 import ManageUser from "./components/pages/admin/ManageUser";
@@ -34,6 +35,7 @@ import { HomePagesUser } from "./components/pages/users/HomePagesUser";
 // Routes
 import AdminRoute from "./routes/AdminRoute";
 import UserRoute from "./routes/UserRoute";
+import Cart from "./components/pages/Cart";
 
 function App() {
     const dispatch = useDispatch();
@@ -65,6 +67,7 @@ function App() {
                 {/* Other Routes */}
                 <Route path="/product/:id" element={<Product />} />
                 <Route path="/shop" element={<><ResponsiveAppBar /><Shop /></>} />
+                <Route path="/cart" element={<><ResponsiveAppBar /><Cart /></>} />
 
                 {/* User */}
                 <Route path="/user/index" element={<UserRoute><HomePagesUser /></UserRoute>} />

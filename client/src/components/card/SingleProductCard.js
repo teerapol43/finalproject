@@ -4,14 +4,30 @@ import { HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
-
+import _ from 'lodash'
+import { useSelector, useDispatch } from 'react-redux';
 const { Meta } = Card;
 const { TabPane } = Tabs;
 
 const SingleProductCard = ({ product }) => {
-
+    const dispatches = useDispatch()
     const { _id, id, name, detail, images, price, sold, category } = product
-
+    const handleAddtoCart = () => {
+        let cart = []
+        if (localStorage.getItem('cart')) {
+            cart = JSON.parse(localStorage.getItem('cart'))
+        }
+        cart.push({
+            ...product,
+            count: 1
+        })
+        let unique = _.uniqWith(cart, _.isEqual)
+        localStorage.setItem("cart", JSON.stringify(unique))
+        dispatches({
+            type: "ADD_TO_CART",
+            payload: unique
+        })
+    }
     return (
         <>
             <div className='col-md-4'>
@@ -38,7 +54,7 @@ const SingleProductCard = ({ product }) => {
                         </Link>,
                         <>
                             <ShoppingCartOutlined
-                                // onClick={() => handleRemove(_id)}
+                                onClick={handleAddtoCart}
                                 className='text-danger'
                             />
                             <br />

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    value: "j.s.power",
+    value: [],
     user: []
 }
 
@@ -14,8 +14,9 @@ export const userSlice = createSlice({
             state.user = action.payload;
         },
         logout: (state) => {
+            state.value = []
             state.user = []
-            localStorage.clear()
+            localStorage.removeItem('token');
         },
         incrementByAmount: (state, action) => {
             state.value += action.payload; // Update the state property

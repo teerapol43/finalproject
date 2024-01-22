@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Slider, Switch } from 'antd';
+import { Slider, Checkbox } from 'antd';
 //function
 import { listProduct, searchFilters } from '../../functions/product'
 import NewProductCard from '../card/NewProductCard'
-
+import { listCategory } from '../../functions/Category';
 const Shop = () => {
     const [product, setProduct] = useState([])
     const [loading, setLoading] = useState(false)
@@ -12,12 +12,14 @@ const Shop = () => {
     const [ok, setOk] = useState(false)
     const { search } = useSelector((state) => ({ ...state }))
     const { text } = search
+    const [category, setCategory] = useState([])
+    const [categorySelect, setCategorySelect] = useState([])
 
     //load All Data
     useEffect(() => {
         loadData()
+        listCategory().then(res => setCategory(res.data))
     }, [])
-
     const loadData = () => {
         setLoading(true)
         listProduct(12)
@@ -58,6 +60,24 @@ const Shop = () => {
         }, 300)
 
     }
+    const handleCheck = (e) => {
+        let inCheck = e.target.value;
+        let inState = [...categorySelect];
+        let findCheck = inState.indexOf(inCheck);
+        if (findCheck === -1) {
+            inState.push(inCheck);
+        } else {
+            inState.splice(findCheck, 1);
+        }
+        setCategorySelect(inState);
+        fetchDataFilter({ category: inState })
+
+        // Fetch data with updated filters
+        if (inState.length < 1) {
+            loadData()
+        }
+    };
+
     return (
         <>
             <div className='container-fluid'>
@@ -70,6 +90,16 @@ const Shop = () => {
                             value={price}
                             onChange={handlePrice}
                             range max={100000} />
+                        <hr />
+                        <h4>ค้นหาตามหมวดหมู่สินค้า</h4>
+                        {category.map((item, index) =>
+                            <Checkbox
+                                onChange={handleCheck}
+                                value={item._id}
+                            >
+                                {item.name}
+                            </Checkbox>
+                        )}
                     </div>
                     <div className='col-md-9'>
                         {loading
