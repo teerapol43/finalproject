@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { readProduct } from '../../functions/product'
+import { readProduct } from '../functions/product'
 import { useParams } from 'react-router-dom'
 import SingleProductCard from '../card/SingleProductCard'
 

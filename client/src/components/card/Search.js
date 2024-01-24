@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearchQuery } from '../../store/SearchSlice';
+import { setSearchQuery } from '../store/SearchSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Search = () => {

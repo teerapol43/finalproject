@@ -2,8 +2,10 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ProductTableCart from '../card/ProductTableCart';
-import { userCart } from '../../functions/user';
+import { userCart } from '../functions/user';
+import { useNavigate } from 'react-router-dom';
 const Cart = () => {
+    const navigate = useNavigate()
     const { cart, user } = useSelector((state) => ({ ...state }))
     const dispatch = useDispatch()
     const getTotal = () => {
@@ -12,12 +14,14 @@ const Cart = () => {
         }, 0);
     };
     const handleSaveOrder = () => {
+        alert('CheckOut Order')
         userCart(user.user.token, cart)
             .then(res => {
                 console.log(res)
             }).catch(err => {
                 console.log(err)
             })
+        navigate('/checkout')
     }
     const showCartItem = () => {
         return (

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom'
-import { createProduct } from '../../../../functions/product';
-import { listCategory } from '../../../../functions/Category';
+import { createProduct } from '../../../functions/product';
+import { listCategory } from '../../../functions/Category';
 import FileUpload from './FileUpload';
 import { Spin } from 'antd';
 const initialstate = {

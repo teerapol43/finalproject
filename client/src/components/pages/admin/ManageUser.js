@@ -10,7 +10,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 //function
-import { list, changeRole } from "../../../functions/user";
+import { list, changeRole } from "../../functions/user";
 import SelectInput from '@mui/material/Select/SelectInput';
 
 const ManageUser = () => {

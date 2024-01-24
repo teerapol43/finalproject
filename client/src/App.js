@@ -6,10 +6,10 @@ import { CssBaseline } from "@mui/material";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { currentUser } from "./functions/auth";
+import { currentUser } from "./components/functions/auth";
 import { useDispatch } from "react-redux";
-import { login } from "./store/userSlice";
-import ResponsiveAppBar from "./layout/ResponsiveAppBar";
+import { login } from "./components/store/userSlice";
+import ResponsiveAppBar from "./components/layout/ResponsiveAppBar";
 
 // Pages
 import Homepage from "./components/pages/Homepage";
@@ -18,7 +18,7 @@ import Shop from "./components/pages/Shop";
 import NotFound404 from "./components/pages/NotFound404";
 import Login from "./components/pages/auth/Login";
 import Register from "./components/pages/auth/Register";
-
+import CheckOut from "./components/pages/CheckOut";
 
 // Admin
 import { HomePagesAdmin } from "./components/pages/admin/HomePagesAdmin";
@@ -31,10 +31,12 @@ import PageProduct from "./components/pages/admin/product/PageProduct";
 
 // User
 import { HomePagesUser } from "./components/pages/users/HomePagesUser";
+import Wishlist from "./components/pages/users/Wishlist";
+import History from "./components/pages/users/History";
 
 // Routes
-import AdminRoute from "./routes/AdminRoute";
-import UserRoute from "./routes/UserRoute";
+import AdminRoute from "./components/routes/AdminRoute";
+import UserRoute from "./components/routes/UserRoute";
 import Cart from "./components/pages/Cart";
 
 function App() {
@@ -63,7 +65,6 @@ function App() {
                 <Route path="/" element={<><ResponsiveAppBar /><Homepage /></>} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
-
                 {/* Other Routes */}
                 <Route path="/product/:id" element={<Product />} />
                 <Route path="/shop" element={<><ResponsiveAppBar /><Shop /></>} />
@@ -71,7 +72,9 @@ function App() {
 
                 {/* User */}
                 <Route path="/user/index" element={<UserRoute><HomePagesUser /></UserRoute>} />
-
+                <Route path="/checkout" element={<UserRoute><CheckOut /></UserRoute>} />
+                <Route path="/user/wishlist" element={<UserRoute><Wishlist /></UserRoute>} />
+                <Route path="/user/history" element={<UserRoute><History /></UserRoute>} />
                 {/* Admin Routes */}
                 <Route path="/admin/viewtable" element={<AdminRoute><PageProduct /></AdminRoute>} />
                 <Route path="/admin/create-product" element={<AdminRoute><CreateProduct /></AdminRoute>} />

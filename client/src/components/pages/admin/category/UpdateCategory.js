@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { readCategory, editCategory } from '../../../../functions/Category'
+import { readCategory, editCategory } from '../../../functions/Category'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify'

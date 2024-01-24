@@ -14,10 +14,10 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 // function
-import { login } from "../../../functions/auth";
+import { login } from "../../functions/auth";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login as loginRedux } from "../../../store/userSlice";
+import { login as loginRedux } from "../../store/userSlice";
 import { toast } from 'react-toastify';
 function Copyright(props) {
     return (

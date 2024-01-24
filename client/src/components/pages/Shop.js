@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Slider, Checkbox } from 'antd';
 //function
-import { listProduct, searchFilters } from '../../functions/product'
+import { listProduct, searchFilters } from '../functions/product'
 import NewProductCard from '../card/NewProductCard'
-import { listCategory } from '../../functions/Category';
+import { listCategory } from '../functions/Category';
 const Shop = () => {
     const [product, setProduct] = useState([])
     const [loading, setLoading] = useState(false)

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { readProduct, updateProduct } from '../../../../functions/product'
+import { readProduct, updateProduct } from '../../../functions/product'
 import { useParams, useNavigate } from 'react-router-dom'
-import { listCategory } from '../../../../functions/Category'
+import { listCategory } from '../../../functions/Category'
 import { toast } from 'react-toastify'
 import FileUpload from './FileUpload'
 

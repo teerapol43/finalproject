@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -22,8 +22,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/userSlice";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "antd"
+import { StarOutlined } from '@ant-design/icons'
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import Search from "../components/card/Search";
+import Search from "../card/Search";
 const pages = [
     {
         title: "Contract",
@@ -40,6 +41,11 @@ const cartPage = {
     title: "Cart",
     icon: <ShoppingCartIcon />,
     to: "/cart", // Update with the correct path for your shop
+};
+const WishlistPage = {
+    title: "Wishlist",
+    icon: <StarOutlined />,
+    to: "/user/wishlist", // Update with the correct path for your shop
 };
 
 const authen = [
@@ -59,6 +65,11 @@ const settings = [
         title: "Profile",
         icon: "",
         to: "/profile",
+    },
+    {
+        title: "ประวัติการสั่งซื้อ",
+        icon: "",
+        to: "/user/history",
     },
     {
         title: "Logout",
@@ -96,6 +107,21 @@ function ResponsiveAppBar() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+    useEffect(() => {
+        const handleCartChange = () => {
+            // Reload the page when cart length changes
+            window.location.reload();
+        };
+
+        // Add event listener for changes in the cart length
+        window.addEventListener("cartChange", handleCartChange);
+
+        // Remove the event listener on component unmount
+        return () => {
+            window.removeEventListener("cartChange", handleCartChange);
+        };
+    }, [cart.length]);
+
 
     return (
         <AppBar position="static" style={{ backgroundColor: "#f9a0a1" }}>
@@ -208,6 +234,19 @@ function ResponsiveAppBar() {
                                 startIcon={shopPage.icon}
                             >
                                 {shopPage.title}
+                            </Button>
+                        </Link>
+                        <Link to={WishlistPage.to}>
+                            <Button
+                                onClick={handleCloseNavMenu}
+                                sx={{
+                                    my: 2,
+                                    color: "white",
+                                    mr: 2,
+                                }}
+                                startIcon={WishlistPage.icon}
+                            >
+                                {WishlistPage.title}
                             </Button>
                         </Link>
                         <Link to={cartPage.to}>

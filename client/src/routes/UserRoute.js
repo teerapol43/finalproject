@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import NotFound404 from '../components/pages/NotFound404'
-import ResponsiveAppBar from '../layout/ResponsiveAppBar';
+import NotFound404 from '../pages/NotFound404'
+import ResponsiveAppBar from '../components/layout/ResponsiveAppBar';
 const UserRoute = ({ chidren }) => {
     const { user } = useSelector((state) => ({ ...state }))
     console.log('UserRoute', user)

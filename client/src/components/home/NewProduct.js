@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { listProductBy } from '../../functions/product';
+import { listProductBy } from '../functions/product';
 import NewProductCard from '../card/NewProductCard';
 import LoadingCard from '../card/LoadingCard';
 

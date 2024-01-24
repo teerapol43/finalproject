@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { listProduct, removeProduct } from '../../../../functions/product';
+import { listProduct, removeProduct } from '../../../functions/product';
 import ProductCard from '../../../card/ProductCard';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';

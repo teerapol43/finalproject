@@ -13,7 +13,7 @@ const ProductTableCart = ({ item }) => {
             cart = JSON.parse(localStorage.getItem('cart'))
         }
         cart.map((product, i) => {
-            if (product._id == item._id) {
+            if (product._id === item._id) {
                 cart[i].count = count
             }
         })
@@ -29,10 +29,10 @@ const ProductTableCart = ({ item }) => {
             cart = JSON.parse(localStorage.getItem('cart'))
         }
         cart.map((product, i) => {
-            if (product._id == item._id) {
-                cart.splice(i, 1)
+            if (product._id === item._id) {
+                cart.splice(i, 1);
             }
-        })
+        });
         localStorage.setItem('cart', JSON.stringify(cart))
         dispatch({
             type: "addToCart",
@@ -52,7 +52,7 @@ const ProductTableCart = ({ item }) => {
             <td>{item.price}</td>
             <td>
                 <input
-                    onChange={(e) => handleChangeCount(e, item)}
+                    onChange={handleChangeCount}
                     className='form-control'
                     type='number'
                     value={item.count}

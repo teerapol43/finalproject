@@ -6,12 +6,15 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import _ from 'lodash'
 import { useSelector, useDispatch } from 'react-redux';
+import { addToWishList } from '../functions/user';
+import { toast } from 'react-toastify';
 const { Meta } = Card;
 const { TabPane } = Tabs;
 
 const SingleProductCard = ({ product }) => {
     const dispatches = useDispatch()
     const { _id, id, name, detail, images, price, sold, category } = product
+    const { user } = useSelector((state) => ({ ...state }));
     const handleAddtoCart = () => {
         let cart = []
         if (localStorage.getItem('cart')) {
@@ -27,6 +30,19 @@ const SingleProductCard = ({ product }) => {
             type: "ADD_TO_CART",
             payload: unique
         })
+    }
+    const handleAddtoWishList = (e) => {
+        if (user) {
+            addToWishList(user.user.token, _id)
+                .then(res => {
+                    console.log(res.data)
+                    toast.success('Add to wishlist Success')
+                }).catch((err) => {
+                    console.log(err)
+                })
+        } else {
+            toast.error('Go to Login')
+        }
     }
     return (
         <>
@@ -48,17 +64,18 @@ const SingleProductCard = ({ product }) => {
                 <h1 className='bg-info p-3'>{name}</h1>
                 <Card
                     actions={[
-                        <Link to={'/'}>
+                        <a onClick={handleAddtoWishList}>
                             <HeartOutlined className='text-info' /><br />
                             Add to wishlist
-                        </Link>,
+                        </a>,
                         <>
-                            <ShoppingCartOutlined
-                                onClick={handleAddtoCart}
-                                className='text-danger'
-                            />
-                            <br />
-                            Add to cart
+                            <a onClick={handleAddtoCart}>
+                                <ShoppingCartOutlined
+                                    className='text-danger'
+                                />
+                                <br />
+                                Add to cart
+                            </a>
                         </>
 
                     ]}
