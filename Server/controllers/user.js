@@ -1,43 +1,92 @@
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require('../model/User')
 const Product = require('../model/Product')
 const Cart = require('../model/Cart')
 const Order = require('../model/Order')
 
-exports.list = async (req, res) => {
+exports.listUsers = async (req, res) => {
     try {
-        //code
-        const user = await User.find({})
-            .select('-password')
-            .exec()
-        res.send(user)
+        // Code
+        const user = await User.find({}).select("-password").exec();
+        res.send(user);
     } catch (err) {
         console.log(err);
-        res.status(500).send("Server Error");
+        res.status(500).send("Server Error!");
     }
 };
+
+exports.readUsers = async (req, res) => {
+    try {
+        // Code
+        const id = req.params.id;
+        const user = await User.findOne({ _id: id }).select("-password").exec();
+        res.send(user);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Server Error!");
+    }
+};
+
+exports.updateUsers = async (req, res) => {
+    try {
+        // Code
+        var { id, password } = req.body.values
+        // 1 gen salt
+        const salt = await bcrypt.genSalt(10);
+        // 2 encrypt
+        var enPassword = await bcrypt.hash(password, salt);
+
+        const user = await User.findOneAndUpdate(
+            { _id: id },
+            { password: enPassword }
+        );
+        res.send(user);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Server Error!");
+    }
+};
+
+exports.removeUsers = async (req, res) => {
+    try {
+        // Code
+        const id = req.params.id;
+        const user = await User.findOneAndDelete({ _id: id });
+        res.send(user);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Server Error!");
+    }
+};
+
+exports.changeStatus = async (req, res) => {
+    try {
+        // Code
+        console.log(req.body);
+        const user = await User.findOneAndUpdate(
+            { _id: req.body.id },
+            { enabled: req.body.enabled }
+        );
+        res.send(user);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Server Error!");
+    }
+};
+
 exports.changeRole = async (req, res) => {
     try {
-        const { id, role } = req.body.data;
-        const user = await User.findOneAndUpdate({ _id: id }, { role: role }, { new: true })
-            .select('-password')
-            .exec();
+        // Code
+        console.log(req.body);
+        const user = await User.findOneAndUpdate(
+            { _id: req.body.id },
+            { role: req.body.role }
+        );
         res.send(user);
-
     } catch (err) {
         console.log(err);
-        res.status(500).send("Server Error");
-    }
-
-};
-
-exports.removeUser = async (req, res) => {
-    try {
-        const { id } = req.params; // Access the user ID from req.params
-        const deletedUser = await User.findOneAndRemove({ _id: id }).exec();
-        res.send(deletedUser);
-    } catch (error) {
-        console.log(error);
-        res.status(500).send('Server Error Remove User!!!');
+        res.status(500).send("Server Error!");
     }
 };
 exports.userCart = async (req, res) => {
@@ -159,8 +208,10 @@ exports.getOrder = async (req, res) => {
 };
 exports.emptyCart = async (req, res) => {
     try {
+        const { id } = req.params;
         const user = await User.findOne({ username: req.user.username }).exec();
-        await Cart.findOneAndRemove({ orderBy: user._id }).exec();
+        const deletecart = await Cart.findOneAndRemove({ _id: id }).exec();
+        res.send(deletecart)
         res.status(204).send(); // No Content (success, but no response body)
     } catch (error) {
         console.error("Error removing cart:", error);

@@ -32,11 +32,11 @@ const CheckOut = () => {
                 }
             })
     }
-    const handleCreateOrder = () => {
+    const handleCreateOrder = (id) => {
         saveOrder(user.user.token)
             .then(res => {
-                console.log(res.data)
-                emptyCart(user.user.token)
+                console.log()
+                emptyCart(user.user.token, id)
                 dispatch({
                     type: 'addToCart',
                     payload: []

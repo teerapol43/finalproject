@@ -16,7 +16,7 @@ export const userSlice = createSlice({
         logout: (state) => {
             state.value = []
             state.user = []
-            localStorage.removeItem('token');
+            localStorage.clear()
         },
         incrementByAmount: (state, action) => {
             state.value += action.payload; // Update the state property

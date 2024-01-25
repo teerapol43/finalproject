@@ -1,92 +1,187 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from "react-redux"
+import React, { useState, useEffect } from "react";
+import { Switch, Select, Tag, Modal } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import moment from "moment/min/moment-with-locales";
+// functions
+import {
+    listUser,
+    changeStatus,
+    changeRole,
+    removeUser,
+    resetPassword
+} from "../../functions/user";
 
-import { Box, Button, MenuItem, Select, TextField } from "@mui/material";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-//function
-import { list, changeRole } from "../../functions/user";
-import SelectInput from '@mui/material/Select/SelectInput';
-
-const ManageUser = () => {
-    const [data, setData] = useState([])
+const ManageAdmin = () => {
     const { user } = useSelector((state) => ({ ...state }));
-    console.log(data)
-    useEffect(() => {
-        loadData(user.user.token)
-    }, [])
-    const loadData = async (authtoken) => {
-        await list(authtoken).then((res) => {
-            setData(res.data)
-        }).catch(err => console.log(err))
-    }
-    const role = ["admin", "user"]
+    const [data, setData] = useState([]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [values, setValues] = useState({
+        id: "",
+        password: "",
+    });
 
-    const handleChangeRole = async (id, e) => {
-        console.log(id, e.target.value);
-
-        const value = {
-            id: id,
-            role: e.target.value,
-        };
-
-        await changeRole(user.user.token, value)
-            .then((res) => {
-                loadData(user.user.token);
-            })
-            .catch((err) => console.log(err));
+    const showModal = (id) => {
+        setIsModalVisible(true);
+        setValues({ ...values, id: id });
+    };
+    const handleChangePassword = (e) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
     };
 
+    const handleOk = () => {
+        setIsModalVisible(false);
+        resetPassword(user.user.token, values.id, { values })
+            .then(res => {
+                console.log(res)
+                loadData(user.user.token);
+            }).catch(err => {
+                console.log(err.response)
+            })
+
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+
+    console.log("data", data);
+    useEffect(() => {
+        //code
+        loadData(user.user.token);
+    }, []);
+
+    const loadData = (authtoken) => {
+        //code
+        listUser(authtoken)
+            .then((res) => {
+                //code
+                setData(res.data);
+            })
+            .catch((err) => {
+                //err
+                console.log(err.response.data);
+            });
+    };
+
+    const handleOnchange = (e, id) => {
+        const value = {
+            id: id,
+            enabled: e,
+        };
+        changeStatus(user.user.token, value)
+            .then((res) => {
+                console.log(res);
+                loadData(user.user.token);
+            })
+            .catch((err) => {
+                console.log(err.response);
+            });
+    };
+
+    const handleChangeRole = (e, id) => {
+        let values = {
+            id: id,
+            role: e,
+        };
+        changeRole(user.user.token, values)
+            .then((res) => {
+                console.log(res);
+                loadData(user.user.token);
+            })
+            .catch((err) => {
+                console.log(err.response);
+            });
+    };
+    const handleRemove = (id) => {
+        if (window.confirm("Are You Sure Delete!!")) {
+            removeUser(user.user.token, id)
+                .then((res) => {
+                    console.log(res);
+                    loadData(user.user.token);
+                })
+                .catch((err) => {
+                    console.log(err.response);
+                });
+        }
+    };
+    const roleData = ["admin", "user"];
     return (
-        <div>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>#</TableCell>
-                            <TableCell>username</TableCell>
-                            <TableCell>role</TableCell>
-                            <TableCell>updatedAt</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {data
-                            ? data.map((item, index) => (
-                                <TableRow
-                                    key={index}
-                                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                                >
-                                    <TableCell>{index + 1}</TableCell>
-                                    <TableCell>{item.username}</TableCell>
-                                    <TableCell>
+        <div className="container-fluid">
+            <div className="row">
+
+                <div className="col">
+                    <h1>ManageAdmin Page</h1>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">username</th>
+                                <th scope="col">role</th>
+                                <th scope="col">status</th>
+                                <th scope="col">created</th>
+                                <th scope="col">updated</th>
+                                <th scope="col">actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.map((item, index) => (
+                                <tr>
+                                    <th scope="row">{item.username}</th>
+                                    <td>
                                         <Select
-                                            onChange={(e) => handleChangeRole(item._id, e)}
-                                            defaultValue={item.role}
-                                            style={{ width: "200px" }}
+                                            style={{ width: "100%" }}
+                                            value={item.role}
+                                            onChange={(e) => handleChangeRole(e, item._id)}
                                         >
-                                            {role.map((item) => (
-                                                <MenuItem value={item}>{item}</MenuItem>
+                                            {roleData.map((item, index) => (
+                                                <Select.Option value={item} key={index}>
+                                                    {item == "admin" ? (
+                                                        <Tag color="green">{item}</Tag>
+                                                    ) : (
+                                                        <Tag color="red">{item}</Tag>
+                                                    )}
+                                                </Select.Option>
                                             ))}
                                         </Select>
-                                    </TableCell>
-                                    <TableCell>{item.updatedAt}</TableCell>
-                                    <TableCell >
-                                    </TableCell>
-                                    <TableCell>
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                            : null}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                                    </td>
+                                    <td>
+                                        <Switch
+                                            checked={item.enabled}
+                                            onChange={(e) => handleOnchange(e, item._id)}
+                                        />
+                                    </td>
+                                    <td>{moment(item.createdAt).locale("th").format("ll")}</td>
+                                    <td>
+                                        {moment(item.updatedAt)
+                                            .locale("th")
+                                            .startOf(item.updatedAt)
+                                            .fromNow()}
+                                    </td>
+                                    <td>
+                                        <DeleteOutlined onClick={() => handleRemove(item._id)} />
+                                        <EditOutlined onClick={() => showModal(item._id)} />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <Modal
+                        title="Basic Modal"
+                        visible={isModalVisible}
+                        onOk={handleOk}
+                        onCancel={handleCancel}
+                    >
+                        <p>New Password :</p>
+                        <input
+                            onChange={handleChangePassword}
+                            type="text"
+                            name="password"
+                        />
+                    </Modal>
+                </div>
+            </div>
         </div>
-    )
-}
+    );
+};
 
-export default ManageUser
+export default ManageAdmin;

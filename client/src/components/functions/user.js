@@ -1,7 +1,23 @@
 import axios from "axios";
 
-export const list = async (authtoken) => {
-    return await axios.get(process.env.REACT_APP_API + "/user", {
+export const listUser = async (authtoken) => {
+    return await axios.get(process.env.REACT_APP_API + "/users", {
+        headers: {
+            authtoken,
+        },
+    });
+};
+
+export const changeStatus = async (authtoken, value) => {
+    return await axios.post(process.env.REACT_APP_API + "/change-status", value, {
+        headers: {
+            authtoken,
+        },
+    });
+};
+
+export const changeRole = async (authtoken, value) => {
+    return await axios.post(process.env.REACT_APP_API + "/change-role", value, {
         headers: {
             authtoken,
         },
@@ -9,26 +25,19 @@ export const list = async (authtoken) => {
 };
 
 export const removeUser = async (authtoken, id) => {
-    try {
-        return await axios.delete(process.env.REACT_APP_API + "/user/" + id, {
-            headers: {
-                authtoken
-            }
-        });
-    } catch (error) {
-        console.error("Error removing user:", error);
-        throw error; // Rethrow the error to be caught by the calling code
-    }
-};
-
-export const changeRole = async (authtoken, data) => {
-    return await axios.post(process.env.REACT_APP_API + "/change-role", { data }, {
+    return await axios.delete(process.env.REACT_APP_API + "/users/" + id, {
         headers: {
             authtoken,
         },
     });
 };
-
+export const resetPassword = async (authtoken, id, values) => {
+    return await axios.put(process.env.REACT_APP_API + "/users/" + id, values, {
+        headers: {
+            authtoken,
+        },
+    });
+};
 export const userCart = async (authtoken, cart) => {
     return await axios.post(process.env.REACT_APP_API + "/user/cart", { cart }, {
         headers: {
@@ -45,8 +54,8 @@ export const getUserCart = async (authtoken) => {
     });
 };
 
-export const emptyCart = async (authtoken) => {
-    return await axios.delete(`${process.env.REACT_APP_API}/user/cart`, {
+export const emptyCart = async (authtoken, id) => {
+    return await axios.delete(process.env.REACT_APP_API + "/user/cart/" + id, {
         headers: { authtoken },
     });
 };

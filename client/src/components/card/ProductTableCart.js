@@ -1,11 +1,22 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify'
 import { DeleteOutlined } from '@ant-design/icons'
+import { getUserCart } from '../functions/user';
 
 const ProductTableCart = ({ item }) => {
+    const [cart, setCart] = useState([])
+    const { user } = useSelector((state) => ({ ...state }))
     const dispatch = useDispatch()
-
+    useEffect(() => {
+        loadData()
+    }, [])
+    const loadData = () => {
+        getUserCart(user.user.token)
+            .then((res) => {
+                setCart(res.data.cart)
+            })
+    }
     const handleChangeCount = (e) => {
         const count = e.target.value < 1 ? 1 : e.target.value
         let cart = []

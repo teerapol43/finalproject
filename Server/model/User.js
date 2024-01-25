@@ -1,13 +1,19 @@
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Schema;
 const uesrSchema = mongoose.Schema({
-    username: String,
+    username: {
+        type: String,
+    },
     password: {
-        type: String
+        type: String,
     },
     role: {
         type: String,
-        default: "user"
+        default: "user",
+    },
+    enabled: {
+        type: Boolean,
+        default: false,
     },
     address: String,
     wishlist: [{

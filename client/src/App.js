@@ -28,7 +28,7 @@ import UpdateCategory from "./components/pages/admin/category/UpdateCategory";
 import CreateProduct from "./components/pages/admin/product/CreateProduct";
 import UpdateProduct from "./components/pages/admin/product/UpdateProduct";
 import PageProduct from "./components/pages/admin/product/PageProduct";
-
+import Order from "./components/pages/admin/Order";
 // User
 import { HomePagesUser } from "./components/pages/users/HomePagesUser";
 import Wishlist from "./components/pages/users/Wishlist";
@@ -84,6 +84,7 @@ function App() {
                 <Route path="/admin/update-category/:id" element={<AdminRoute><UpdateCategory /></AdminRoute>} />
                 <Route path="/admin/manage" element={<AdminRoute><ManageUser /></AdminRoute>} />
                 <Route path="/admin/index" element={<AdminRoute><HomePagesAdmin /></AdminRoute>} />
+                <Route path="/admin/orders" element={<AdminRoute><Order /></AdminRoute>} />
 
                 <Route path="/edit/:id" element={<AdminRoute><UpdateProduct /></AdminRoute>} />
             </Routes>

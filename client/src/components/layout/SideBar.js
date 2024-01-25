@@ -130,7 +130,9 @@ const SideBar = () => {
                             </SubMenu>
                         </Menu>
                         <Menu>
-                            <MenuItem icon={<ShoppingCartIcon />}>Orders</MenuItem>
+                            <Link to={"/admin/orders"} className="menu-bars">
+                                <MenuItem icon={<ShoppingCartIcon />}>Orders</MenuItem>
+                            </Link>
                         </Menu>
                     </div>
                 </div>
