@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { toast } from 'react-toastify'
-
+import { useNavigate } from 'react-router-dom'
 const CheckOut = () => {
     const { user } = useSelector((state) => ({ ...state }));
     const [products, setProducts] = useState([]);
@@ -12,7 +12,7 @@ const CheckOut = () => {
     const [address, setAddress] = useState("")
     const [addressSaved, setAddressSaved] = useState(false)
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     useEffect(() => {
         getUserCart(user.user.token)
             .then(res => {
@@ -36,11 +36,17 @@ const CheckOut = () => {
         saveOrder(user.user.token)
             .then(res => {
                 console.log()
-                emptyCart(user.user.token, id)
+                emptyCart(user.user.token)
                 dispatch({
                     type: 'addToCart',
                     payload: []
                 })
+                if (typeof window !== "undefined") {
+                    localStorage.removeItem("cart");
+                }
+
+                toast.success("Save Order Success");
+                navigate('/user/history')
             })
     }
     return (

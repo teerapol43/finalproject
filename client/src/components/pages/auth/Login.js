@@ -57,10 +57,11 @@ export default function Login() {
 
         login(js)
             .then(res => {
-                console.log(res)
+                console.log(res.data.payload)
                 toast.success('User ' + res.data.payload.user.username + ' Login Success');
                 dispatch(loginRedux({
                     username: res.data.payload.user.username,
+                    cart: res.data.payload.user.cart,
                     role: res.data.payload.user.role,
                     token: res.data.token
                 }))

@@ -80,6 +80,7 @@ const settings = [
 
 function ResponsiveAppBar() {
     const { user, cart } = useSelector((state) => ({ ...state }));
+    const [forceRender, setForceRender] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     console.log(user)
@@ -110,7 +111,7 @@ function ResponsiveAppBar() {
     useEffect(() => {
         const handleCartChange = () => {
             // Reload the page when cart length changes
-            window.location.reload();
+            setForceRender((prev) => !prev);
         };
 
         // Add event listener for changes in the cart length
@@ -121,7 +122,6 @@ function ResponsiveAppBar() {
             window.removeEventListener("cartChange", handleCartChange);
         };
     }, [cart.length]);
-
 
     return (
         <AppBar position="static" style={{ backgroundColor: "#f9a0a1" }}>
