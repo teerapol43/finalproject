@@ -45,6 +45,7 @@ function App() {
 
     currentUser(idToken)
         .then((res) => {
+            console.log(res.data)
             dispatch(
                 login({
                     name: res.data.username,

@@ -212,7 +212,6 @@ exports.emptyCart = async (req, res) => {
         const empty = await Cart
             .findOneAndRemove({ orderBy: user._id })
             .exec()
-
         res.send(empty)
 
     } catch (err) {

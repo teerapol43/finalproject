@@ -16,6 +16,10 @@ const uesrSchema = mongoose.Schema({
         default: false,
     },
     address: String,
+    cart: [{
+        type: ObjectId,
+        ref: 'cart'
+    }],
     wishlist: [{
         type: ObjectId,
         ref: 'product'

@@ -2,10 +2,14 @@ const mongoose = require("mongoose");
 
 const connectDB = async () => {
   try {
-    await mongoose.connect("mongodb://127.0.0.1:27017/elect");
+    console.log("Connecting to the database...");
+    await mongoose.connect("mongodb://127.0.0.1:27017/elect", {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log("DB Connected");
   } catch (err) {
-    console.log(err);
+    console.error("Error connecting to the database:", err);
   }
 };
 
