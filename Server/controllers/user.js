@@ -205,6 +205,18 @@ exports.saveAddress = async (req, res) => {
         res.status(500).send('Server Error saveAddress User!!!');
     }
 };
+exports.saveName = async (req, res) => {
+    try {
+        const userName = await User
+            .findOneAndUpdate({ username: req.user.username },
+                { name: req.body.name }
+            ).exec()
+        res.json({ ok: true })
+    } catch (error) {
+        // Handle errors, and send a 500 Internal Server Error response
+        res.status(500).send('Server Error saveAddress User!!!');
+    }
+};
 exports.getPost = async (req, res) => {
     try {
         let list = await User
@@ -250,6 +262,19 @@ exports.getAddress = async (req, res) => {
             .findOne({ username: req.user.username })
             .select('address')
             .populate('address')
+            .exec()
+        res.json(list)
+    } catch (error) {
+        console.error('Error in address', error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+exports.getName = async (req, res) => {
+    try {
+        let list = await User
+            .findOne({ username: req.user.username })
+            .select('name')
+            .populate('name')
             .exec()
         res.json(list)
     } catch (error) {

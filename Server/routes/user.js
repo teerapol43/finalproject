@@ -21,7 +21,11 @@ const {
     savePhone,
     saveCounty,
     savePost,
-    getAddress } = require("../controllers/user");
+    getAddress,
+    getPhone,
+    getCounty,
+    getPost,
+    getName } = require("../controllers/user");
 const { auth, adminCheck } = require("../Middleware/auth");
 
 
@@ -61,8 +65,13 @@ router.delete("/user/cart", auth, emptyCart);
 router.post("/user/address", auth, saveAddress);
 router.get("/user/address", auth, getAddress);
 router.post("/user/phone", auth, savePhone);
+router.get("/user/phone", auth, getPhone);
 router.post("/user/county", auth, saveCounty);
+router.get("/user/county", auth, getCounty);
 router.post("/user/post", auth, savePost);
+router.get("/user/post", auth, getPost);
+router.post("/user/name", auth, saveName);
+router.get("/user/name", auth, getName);
 router.post("/user/order", auth, saveOrder);
 router.get("/user/orders", auth, getOrder);
 router.post("/user/wishlist", auth, addToWishList);
