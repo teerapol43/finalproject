@@ -205,6 +205,58 @@ exports.saveAddress = async (req, res) => {
         res.status(500).send('Server Error saveAddress User!!!');
     }
 };
+exports.getPost = async (req, res) => {
+    try {
+        let list = await User
+            .findOne({ username: req.user.username })
+            .select('post')
+            .populate('post')
+            .exec()
+        res.json(list)
+    } catch (error) {
+        console.error('Error in Post', error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+exports.getCounty = async (req, res) => {
+    try {
+        let list = await User
+            .findOne({ username: req.user.username })
+            .select('county')
+            .populate('county')
+            .exec()
+        res.json(list)
+    } catch (error) {
+        console.error('Error in county', error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+exports.getPhone = async (req, res) => {
+    try {
+        let list = await User
+            .findOne({ username: req.user.username })
+            .select('phone')
+            .populate('phone')
+            .exec()
+        res.json(list)
+    } catch (error) {
+        console.error('Error in Phone', error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+exports.getAddress = async (req, res) => {
+    try {
+        let list = await User
+            .findOne({ username: req.user.username })
+            .select('address')
+            .populate('address')
+            .exec()
+        res.json(list)
+    } catch (error) {
+        console.error('Error in address', error);
+        res.status(500).send('Internal Server Error');
+    }
+}
 exports.saveOrder = async (req, res) => {
     try {
         let user = await User.findOne({ username: req.user.username })

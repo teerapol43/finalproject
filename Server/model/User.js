@@ -16,9 +16,9 @@ const uesrSchema = mongoose.Schema({
         default: false,
     },
     address: String,
-    phone: number,
+    phone: Number,
     county: String,
-    post: number,
+    post: Number,
     cart: [{
         type: ObjectId,
         ref: 'cart'

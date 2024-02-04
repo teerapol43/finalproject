@@ -20,7 +20,8 @@ const {
     getOrder,
     savePhone,
     saveCounty,
-    savePost } = require("../controllers/user");
+    savePost,
+    getAddress } = require("../controllers/user");
 const { auth, adminCheck } = require("../Middleware/auth");
 
 
@@ -58,6 +59,7 @@ router.post("/user/cart", auth, userCart);
 router.get("/user/cart", auth, getUserCart);
 router.delete("/user/cart", auth, emptyCart);
 router.post("/user/address", auth, saveAddress);
+router.get("/user/address", auth, getAddress);
 router.post("/user/phone", auth, savePhone);
 router.post("/user/county", auth, saveCounty);
 router.post("/user/post", auth, savePost);

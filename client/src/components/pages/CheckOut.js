@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getUserCart, saveAddress, saveOrder, emptyCart } from '../functions/user';
+import { getUserCart, saveAddress, saveOrder, emptyCart, getAddress } from '../functions/user';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -20,6 +20,14 @@ const CheckOut = () => {
                 setProducts(res.data.products);
                 setTotal(res.data.cartTotal);
             })
+        getAddress(user.user.token)
+            .then(res => {
+                if (res.data) {
+                    setAddress(res.data.address);
+                    setAddressSaved(true);
+                }
+                console.log(address)
+            });
     }, []);
     const handleSaveAddress = () => {
         console.log(address)
@@ -55,10 +63,16 @@ const CheckOut = () => {
                 <div className="col-md-6">
                     <h4>Address</h4>
                     <br />
-                    <ReactQuill value={address} onChange={setAddress} />
-                    <button
-                        className='btn btn-primary mt-2'
-                        onClick={handleSaveAddress}>Save Address</button>
+                    {address ? (
+                        <div>{address}</div>
+                    ) : (
+                        <>
+                            <ReactQuill value={address} onChange={setAddress} />
+                            <button
+                                className='btn btn-primary mt-2'
+                                onClick={handleSaveAddress}>Save Address</button>
+                        </>
+                    )}
                 </div>
                 <div className="col-md-6">
                     <h4>Order Summary</h4>

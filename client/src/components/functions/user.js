@@ -91,6 +91,13 @@ export const getWishList = async (authtoken) => {
         },
     });
 };
+export const getAddress = async (authtoken) => {
+    return await axios.get(process.env.REACT_APP_API + "/user/address", {
+        headers: {
+            authtoken,
+        },
+    });
+};
 export const addToWishList = async (authtoken, productId) => {
     try {
         return await axios.post(process.env.REACT_APP_API + "/user/wishlist", { productId }, {
