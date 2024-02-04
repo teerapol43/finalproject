@@ -157,6 +157,42 @@ exports.getUserCart = async (req, res) => {
         res.status(500).send('Server Error getcart User!!!');
     }
 };
+exports.savePost = async (req, res) => {
+    try {
+        const userpost = await User
+            .findOneAndUpdate({ username: req.user.username },
+                { post: req.body.post }
+            ).exec()
+        res.json({ ok: true })
+    } catch (error) {
+        // Handle errors, and send a 500 Internal Server Error response
+        res.status(500).send('Server Error savephone User!!!');
+    }
+};
+exports.saveCounty = async (req, res) => {
+    try {
+        const usercounty = await User
+            .findOneAndUpdate({ username: req.user.username },
+                { county: req.body.county }
+            ).exec()
+        res.json({ ok: true })
+    } catch (error) {
+        // Handle errors, and send a 500 Internal Server Error response
+        res.status(500).send('Server Error savephone User!!!');
+    }
+};
+exports.savePhone = async (req, res) => {
+    try {
+        const userphone = await User
+            .findOneAndUpdate({ username: req.user.username },
+                { phone: req.body.phone }
+            ).exec()
+        res.json({ ok: true })
+    } catch (error) {
+        // Handle errors, and send a 500 Internal Server Error response
+        res.status(500).send('Server Error savephone User!!!');
+    }
+};
 exports.saveAddress = async (req, res) => {
     try {
         const userAddress = await User

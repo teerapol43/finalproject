@@ -17,7 +17,10 @@ const {
     addToWishList,
     getWishList,
     removeWishList,
-    getOrder } = require("../controllers/user");
+    getOrder,
+    savePhone,
+    saveCounty,
+    savePost } = require("../controllers/user");
 const { auth, adminCheck } = require("../Middleware/auth");
 
 
@@ -55,6 +58,9 @@ router.post("/user/cart", auth, userCart);
 router.get("/user/cart", auth, getUserCart);
 router.delete("/user/cart", auth, emptyCart);
 router.post("/user/address", auth, saveAddress);
+router.post("/user/phone", auth, savePhone);
+router.post("/user/county", auth, saveCounty);
+router.post("/user/post", auth, savePost);
 router.post("/user/order", auth, saveOrder);
 router.get("/user/orders", auth, getOrder);
 router.post("/user/wishlist", auth, addToWishList);
