@@ -1,43 +1,63 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { getOrders } from '../../functions/user'
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { getAddress, getName, getOrders, getPhoneNumber } from '../../functions/user';
+
+// ... (imports)
 
 export const History = () => {
-
-    const { user } = useSelector((state) => ({ ...state }))
-    const [orders, setOrders] = useState([])
+    const { user } = useSelector((state) => ({ ...state }));
+    const [orders, setOrders] = useState({});
+    const [name, setName] = useState({});
+    const [address, setAddress] = useState({});
+    const [phoneNumber, setPhoneNumber] = useState({});
 
     useEffect(() => {
-        loadData()
-    }, [])
+        loadData();
+    }, []);
 
     const loadData = () => {
-        getOrders(user.user.token)
-            .then((res) => {
-                setOrders(res.data)
+        // Fetching orders, address, phone number, and name concurrently
+        Promise.all([
+            getOrders(user.user.token),
+            getAddress(user.user.token),
+            getPhoneNumber(user.user.token),
+            getName(user.user.token)
+        ])
+            .then(([ordersRes, addressRes, phoneNumberRes, nameRes]) => {
+                console.log("Orders response:", ordersRes.data); // Log orders response
+                setOrders(ordersRes.data);
+                setName(nameRes.data && typeof nameRes.data === 'object' ? nameRes.data : { name: nameRes.data });
+                setAddress(addressRes.data && typeof addressRes.data === 'object' ? addressRes.data : { fulladdress: addressRes.data });
+                setPhoneNumber(phoneNumberRes.data && typeof phoneNumberRes.data === 'object' ? phoneNumberRes.data : { phoneNumber: phoneNumberRes.data });
             })
-    }
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+            });
+    };
 
     return (
         <div className='col text-center'>
-            <div className='row'>
-                <h1>Order History</h1>
-                {orders.length === 0 ? (
-                    <p>No orders found</p>
+            <div className='row' style={{ marginTop: '30px' }}>
+                <h1>ประวัติการสั่งซื้อ</h1>
+                {Object.keys(orders).length === 0 ? (
+                    <p>ไม่มีสินค้า</p>
                 ) : (
-                    orders.map((order, index) => (
+                    Object.keys(orders).map((index) => (
                         <div key={index} className='cart m-3'>
-                            <p>Order Status: {order.orderstatus}</p>
-                            <table className='table table-bordered'>
+                            <p>สถานะสินค้า: {orders[index].orderstatus}</p>
+                            <p>ชื่อ: {name.name}</p>
+                            <p>ที่อยู่: {address.fulladdress}</p>
+                            <p>เบอร์โทร: {phoneNumber.phoneNumber}</p>
+                            <table className='table table-bordered' style={{ marginBottom: '50px' }}>
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Price</th>
-                                        <th>Count</th>
+                                        <th>ชื่อ</th>
+                                        <th>ราคา</th>
+                                        <th>ชิ้น</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {order.products.map((product, i) => (
+                                    {orders[index].products.map((product, i) => (
                                         <tr key={i}>
                                             <td>{product.name}</td>
                                             <td>{product.price}</td>
@@ -45,7 +65,7 @@ export const History = () => {
                                         </tr>
                                     ))}
                                     <tr>
-                                        <td colSpan={3}>ราคาสุทธิ:<b><u>{order.cartTotal}</u></b></td>
+                                        <td colSpan={3}>ราคาสุทธิ:<b><u>{orders[index].cartTotal}</u></b></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -54,7 +74,7 @@ export const History = () => {
                 )}
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default History
+export default History;

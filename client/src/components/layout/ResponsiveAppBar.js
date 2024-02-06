@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import { ShoppingOutlined } from '@ant-design/icons'
+import { ShoppingOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
 
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
@@ -21,50 +21,67 @@ import LoginIcon from "@mui/icons-material/Login";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/userSlice";
 import { useNavigate } from "react-router-dom";
-import { Badge } from "antd"
-import { StarOutlined } from '@ant-design/icons'
+import { StarOutlined } from '@ant-design/icons';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Search from "../card/Search";
-const pages = [
+import { Badge } from "antd";
+
+const product = [
     {
-        title: "Contract",
+        title: "ผลิตภัณฑ์",
         icon: "",
-        to: "/contract",
+        to: "/shop",
     },
 ];
-const shopPage = {
-    title: "Shop",
-    icon: <ShoppingOutlined />,
-    to: "/shop", // Update with the correct path for your shop
-};
+const review = [
+    {
+        title: "ผลงานการทำงาน",
+        icon: "",
+        to: "/review",
+    },
+];
+const aboutus = [
+    {
+        title: "เกี่ยวกับเรา",
+        icon: "",
+        to: "/aboutus",
+    },
+];
+const contact = [
+    {
+        title: "ติดต่อเรา",
+        icon: "",
+        to: "/contact",
+    },
+];
+
 const cartPage = {
-    title: "Cart",
+    title: "ตะกร้า",
     icon: <ShoppingCartIcon />,
     to: "/cart", // Update with the correct path for your shop
 };
 const WishlistPage = {
-    title: "Wishlist",
+    title: "สินค้าที่ชอบ",
     icon: <StarOutlined />,
     to: "/user/wishlist", // Update with the correct path for your shop
 };
-
 const authen = [
     {
-        title: "Register",
+        title: "สมัครสมาชิก",
         icon: <PeopleAltOutlinedIcon />,
         to: "/register",
     },
     {
-        title: "Login",
+        title: "เข้าสู่ระบบ",
         icon: <LoginIcon />,
         to: "/login",
     },
 ];
 const settings = [
     {
-        title: "Profile",
+        title: "โปรไฟล์",
         icon: "",
-        to: "/profile",
+        to: "/user/profileuser",
     },
     {
         title: "ประวัติการสั่งซื้อ",
@@ -72,7 +89,7 @@ const settings = [
         to: "/user/history",
     },
     {
-        title: "Logout",
+        title: "ออกจากระบบ",
         icon: "",
         to: "#",
     },
@@ -80,7 +97,6 @@ const settings = [
 
 function ResponsiveAppBar() {
     const { user, cart } = useSelector((state) => ({ ...state }));
-    const [forceRender, setForceRender] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     console.log(user)
@@ -111,7 +127,7 @@ function ResponsiveAppBar() {
     useEffect(() => {
         const handleCartChange = () => {
             // Reload the page when cart length changes
-            setForceRender((prev) => !prev);
+            window.location.reload();
         };
 
         // Add event listener for changes in the cart length
@@ -123,9 +139,10 @@ function ResponsiveAppBar() {
         };
     }, [cart.length]);
 
+
     return (
-        <AppBar position="static" style={{ backgroundColor: "#f9a0a1" }}>
-            <Container maxWidth="xl">
+        <AppBar position="static" style={{ backgroundColor: "#f9a0a1", height: '100%' }}>
+            <Container maxWidth="xxl">
                 <Toolbar disableGutters>
                     {/* LOGO */}
                     {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
@@ -144,16 +161,18 @@ function ResponsiveAppBar() {
                         }}
                     >
                         <IconButton>
-                            <Avatar
-                                alt="Remy Sharp"
-                                src={`/assets/user.jpg`}
-                            />
+                            <Link to="/">
+                                <Avatar style={{ width: '150px', height: '150px' }}
+                                    alt="Remy Sharp"
+                                    src={`/assets/logo.png`}
+                                />
+                            </Link>
                         </IconButton>
                     </Typography>
                     {/* /LOGO */}
 
                     {/* Minimize Menu */}
-                    <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+                    <Box sx={{ flexGrow: 1, display: { xs: "flex", lg: "none" } }}>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
@@ -180,10 +199,31 @@ function ResponsiveAppBar() {
                             open={Boolean(anchorElNav)}
                             onClose={handleCloseNavMenu}
                             sx={{
-                                display: { xs: "block", md: "none" },
+                                display: { xs: "block", lg: "none" },
                             }}
                         >
-                            {pages.map((page, index) => (
+                            {product.map((page, index) => (
+                                <MenuItem key={index} onClick={handleCloseNavMenu}>
+                                    <Link to={page.to} style={{ textDecoration: "none" }}>
+                                        <Typography textAlign="center">{page.title}</Typography>
+                                    </Link>
+                                </MenuItem>
+                            ))}
+                            {review.map((page, index) => (
+                                <MenuItem key={index} onClick={handleCloseNavMenu}>
+                                    <Link to={page.to} style={{ textDecoration: "none" }}>
+                                        <Typography textAlign="center">{page.title}</Typography>
+                                    </Link>
+                                </MenuItem>
+                            ))}
+                            {aboutus.map((page, index) => (
+                                <MenuItem key={index} onClick={handleCloseNavMenu}>
+                                    <Link to={page.to} style={{ textDecoration: "none" }}>
+                                        <Typography textAlign="center">{page.title}</Typography>
+                                    </Link>
+                                </MenuItem>
+                            ))}
+                            {contact.map((page, index) => (
                                 <MenuItem key={index} onClick={handleCloseNavMenu}>
                                     <Link to={page.to} style={{ textDecoration: "none" }}>
                                         <Typography textAlign="center">{page.title}</Typography>
@@ -202,69 +242,7 @@ function ResponsiveAppBar() {
                         </Menu>
                     </Box>
                     {/* /Minimize Menu */}
-
-                    {/* Menu Right Full */}
-                    <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
-                        {user.user.length === 0 &&
-                            authen.map((page, index) => (
-                                <Link to={page.to}>
-                                    <Button
-                                        key={index}
-                                        onClick={handleCloseNavMenu}
-                                        sx={{
-                                            my: 2,
-                                            color: "white",
-                                            mr: 2,
-                                        }}
-                                        startIcon={page.icon}
-                                    >
-                                        {page.title}
-                                    </Button>
-                                </Link>
-                            ))}
-                        {/* Add the "Shop" menu item */}
-                        <Link to={shopPage.to}>
-                            <Button
-                                onClick={handleCloseNavMenu}
-                                sx={{
-                                    my: 2,
-                                    color: "white",
-                                    mr: 2,
-                                }}
-                                startIcon={shopPage.icon}
-                            >
-                                {shopPage.title}
-                            </Button>
-                        </Link>
-                        <Link to={WishlistPage.to}>
-                            <Button
-                                onClick={handleCloseNavMenu}
-                                sx={{
-                                    my: 2,
-                                    color: "white",
-                                    mr: 2,
-                                }}
-                                startIcon={WishlistPage.icon}
-                            >
-                                {WishlistPage.title}
-                            </Button>
-                        </Link>
-                        <Link to={cartPage.to}>
-                            <Button
-                                onClick={handleCloseNavMenu}
-                                sx={{
-                                    my: 2,
-                                    color: "white",
-                                    mr: 2,
-                                }}
-                                startIcon={cartPage.icon}
-                            >
-                                <Badge count={cart.length} offset={[9, 0]}>
-                                    {cartPage.title}
-                                </Badge>
-                            </Button>
-                        </Link>
-                    </Box>
+                    {/* Add the "Shop" menu item */}
                     {/* /Menu Right Full */}
 
                     {/* LOGO Minimize */}
@@ -276,7 +254,7 @@ function ResponsiveAppBar() {
                         href=""
                         sx={{
                             mr: 2,
-                            display: { xs: "flex", md: "none" },
+                            display: { xs: "flex", lg: "none" },
                             flexGrow: 1,
                             fontFamily: "monospace",
                             fontWeight: 700,
@@ -285,18 +263,45 @@ function ResponsiveAppBar() {
                             textDecoration: "none",
                         }}
                     >
-                        <IconButton>
-                            <Avatar
-                                alt="Remy Sharp"
-                                src="https://i.pinimg.com/736x/d3/d6/88/d3d688089e9dcb43cf0e5a3e3989ef0f.jpg"
-                            />
-                        </IconButton>
                     </Typography>
                     {/* /LOGO Minimize */}
 
                     {/* Menu Left Full */}
-                    <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-                        {pages.map((page, index) => (
+                    <Box sx={{ flexGrow: 1, display: { xs: "none", lg: "flex" } }}>
+                        {product.map((page, index) => (
+                            <Link to={page.to}>
+                                <Button
+                                    key={index}
+                                    onClick={handleCloseNavMenu}
+                                    sx={{ my: 2, color: "white", mr: 5 }}
+                                >
+                                    {page.title}
+                                </Button>
+                            </Link>
+                        ))}
+                        {review.map((page, index) => (
+                            <Link to={page.to}>
+                                <Button
+                                    key={index}
+                                    onClick={handleCloseNavMenu}
+                                    sx={{ my: 2, color: "white", mr: 5 }}
+                                >
+                                    {page.title}
+                                </Button>
+                            </Link>
+                        ))}
+                        {aboutus.map((page, index) => (
+                            <Link to={page.to}>
+                                <Button
+                                    key={index}
+                                    onClick={handleCloseNavMenu}
+                                    sx={{ my: 2, color: "white", mr: 5 }}
+                                >
+                                    {page.title}
+                                </Button>
+                            </Link>
+                        ))}
+                        {contact.map((page, index) => (
                             <Link to={page.to}>
                                 <Button
                                     key={index}
@@ -311,7 +316,7 @@ function ResponsiveAppBar() {
                     {/* /Menu Left Full */}
 
                     {/* Menu Right Full */}
-                    <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
+                    <Box sx={{ flexGrow: 0, display: { xs: "none", lg: "flex" } }}>
                         {user.user.length === 0 &&
                             authen.map((page, index) => (
                                 <Link to={page.to}>
@@ -331,20 +336,55 @@ function ResponsiveAppBar() {
                             ))}
                     </Box>
                     {/* /Menu Right Full */}
-
-                    <Box sx={{ flexGrow: 0.2, display: { xs: "flex", md: "flex" }, float: "right" }}>
+                    {
+                        user.user.length !== 0 && (
+                            <Link to={WishlistPage.to}>
+                                <Button
+                                    onClick={handleCloseNavMenu}
+                                    sx={{
+                                        my: 2,
+                                        color: "white",
+                                        mr: 2,
+                                    }}
+                                    startIcon={WishlistPage.icon}
+                                >
+                                    {WishlistPage.title}
+                                </Button>
+                            </Link>
+                        )}
+                    {
+                        user.user.length !== 0 && (
+                            <Link to={cartPage.to}>
+                                <Button
+                                    onClick={handleCloseNavMenu}
+                                    sx={{
+                                        my: 2,
+                                        color: "white",
+                                        mr: 2,
+                                    }}
+                                    startIcon={cartPage.icon}
+                                >
+                                    <Badge count={cart.length} offset={[9, 0]}>
+                                        <a style={{ color: 'white' }}>
+                                            {cartPage.title}
+                                        </a>
+                                    </Badge>
+                                </Button>
+                            </Link>
+                        )}
+                    <Box sx={{ flexGrow: 0.2, display: { sx: "flex", lg: "flex" }, float: "right" }}>
                         <Search />
                     </Box>
 
                     {/* User Menu */}
                     {
-                        user.user.length != 0 && (
+                        user.user.length !== 0 && (
                             <Box sx={{ flexGrow: 0 }}>
                                 <Tooltip title="Open settings">
                                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                         <Avatar
                                             alt="Remy Sharp"
-                                            src="https://1.bp.blogspot.com/-gBFaZsSyZko/WbETftGiwKI/AAAAAAAAI9I/dEH4ueuWHAwDb-O4bbw3xCLJTzpAYqk9gCLcBGAs/s1600/11.jpg"
+                                            src="#"
                                         />
                                     </IconButton>
                                 </Tooltip>
@@ -368,7 +408,7 @@ function ResponsiveAppBar() {
                                         <MenuItem
                                             key={index}
                                             onClick={
-                                                setting.title == "Logout"
+                                                setting.title === "ออกจากระบบ"
                                                     ? handleLogout
                                                     : handleCloseUserMenu
                                             }
@@ -391,4 +431,5 @@ function ResponsiveAppBar() {
         </AppBar >
     );
 }
+
 export default ResponsiveAppBar;

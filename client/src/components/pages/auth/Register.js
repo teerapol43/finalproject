@@ -1,5 +1,4 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -9,33 +8,14 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 // function
 import { register } from "../../functions/auth";
 import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-function Copyright(props) {
-    return (
-        <Typography
-            variant="body2"
-            color="text.secondary"
-            align="center"
-            {...props}
-        >
-            {"Copyright © "}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{" "}
-            {new Date().getFullYear()}
-            {"."}
-        </Typography>
-    );
-}
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -55,12 +35,12 @@ export default function Register() {
         register(regis)
             .then(res => {
                 console.log(res);
-                toast.success(res.data); // Show success message
+                toast.success("ลงทะเบียนสมัครสมาชิกสำเร็จ"); // Show success message
                 navi('/login');
             })
             .catch(err => {
                 console.log(err);
-                toast.error("Registration failed. Please try again."); // Show error message
+                toast.error("การลงทะเบียนไม่สำเร็จ. กรุณาลองอีกครั้ง."); // Show error message
             });
     }
     return (
@@ -74,7 +54,7 @@ export default function Register() {
                     md={7}
                     sx={{
                         // backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-                        backgroundImage: "url(/assets/17361.jpg)",
+                        backgroundImage: "url(/assets/logo.png)",
                         backgroundRepeat: "no-repeat",
                         backgroundColor: (t) =>
                             t.palette.mode === "light"
@@ -94,11 +74,8 @@ export default function Register() {
                             alignItems: "center",
                         }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Register
+                        <Typography component="h1" variant="h5" style={{ marginTop: '200px' }}>
+                            สมัครสมาชิก
                         </Typography>
                         <Box
                             component="form"
@@ -111,7 +88,7 @@ export default function Register() {
                                 required
                                 fullWidth
                                 id="username"
-                                label="UserName"
+                                label="ชื่อผู้ใช้"
                                 name="username"
                                 autoFocus
                             />
@@ -120,14 +97,14 @@ export default function Register() {
                                 required
                                 fullWidth
                                 name="password"
-                                label="Password"
+                                label="รหัสผ่าน"
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
                             />
                             <FormControlLabel
                                 control={<Checkbox value="remember" color="primary" />}
-                                label="Remember me"
+                                label="จดจำในระบบ"
                             />
                             <Button
                                 type="submit"
@@ -135,13 +112,21 @@ export default function Register() {
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
                             >
-                                register
+                                สมัครสมาชิก
                             </Button>
-                            <Copyright sx={{ mt: 5 }} />
+                            <Grid container>
+                                <Grid item>
+                                    <p>หากคุณยังไม่ได้เป็นสมาชิก
+                                        <Link href="/login" variant="body2" style={{ fontSize: '20px', textDecoration: 'none' }}>
+                                            {" เข้าสู่ระบบ"}
+                                        </Link>
+                                    </p>
+                                </Grid>
+                            </Grid>
                         </Box>
                     </Box>
                 </Grid>
             </Grid>
-        </ThemeProvider>
+        </ThemeProvider >
     );
 }

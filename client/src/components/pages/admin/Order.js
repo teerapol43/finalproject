@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getOrders } from '../../functions/user';
 import { updateStatusOrder, getOrdersAdmin } from '../../functions/admin';
-import { toast } from 'react-toastify'
+import { toast } from 'react-toastify';
+
 const Order = () => {
     const { user } = useSelector((state) => ({ ...state }));
     const [orders, setOrders] = useState([]);
@@ -17,58 +17,70 @@ const Order = () => {
                 setOrders(res.data);
             })
             .catch((error) => {
-                console.error('Error loading orders:', error);
+                console.error('เกิดข้อผิดพลาดในการโหลดคำสั่งซื้อ:', error);
             });
     };
 
     const handleChangeStatus = (orderId, orderstatus) => {
         updateStatusOrder(user.user.token, orderId, orderstatus)
             .then(res => {
-                console.log(res.data)
-                toast.info('Updated ' + res.data.orderstatus + ' Success')
-                loadData()
+                console.log(res.data);
+                toast.info('อัพเดท ' + res.data.orderstatus + ' สำเร็จ');
+                loadData();
             })
+            .catch(error => {
+                console.error('เกิดข้อผิดพลาดในการอัพเดทสถานะ:', error);
+                toast.error('เกิดข้อผิดพลาดในการอัพเดทสถานะ');
+            });
     };
 
     return (
         <div className='col text-center'>
             <div className='row'>
-                <h1>Order </h1>
+                <h1>ข้อมูลการสั่งซื้อสินค้า</h1>
                 {orders.length === 0 ? (
-                    <p>No orders found</p>
+                    <p>ไม่มีสินค้า</p>
                 ) : (
-                    orders.map((order, index) => (
-                        <div key={index} className='cart m-3'>
-                            <p>Order by <b>{order.orderBy.username}</b>
+                    orders.map((order) => (
+                        <div key={order._id} className='cart m-3'>
+                            <p>
+                                สั่งซื้อโดย <b>{order.orderBy.username}</b>
                                 <br />
-                                Status: {order.orderstatus}</p>
+                                สถานะ: {order.orderstatus}
+                            </p>
                             <select
                                 value={order.orderstatus}
                                 onChange={(e) => handleChangeStatus(order._id, e.target.value)}
-                                className='form form-control'>
-                                <option value="Not Process">Not Process</option>
-                                <option value="Processing">Processing</option>
-                                <option value="Cancelled">Cancelled</option>
-                                <option value="Completed">Completed</option>
+                                className='form form-control'
+                            >
+                                <option value="Not Process">ไม่ผ่านการดำเนินงาน</option>
+                                <option value="Processing">กำลังดำเนินงาน</option>
+                                <option value="Cancelled">ยกเลิกสินค้า</option>
+                                <option value="Completed">สั่งซื้อสำเร็จ</option>
                             </select>
                             <table className='table table-bordered'>
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Price</th>
-                                        <th>Count</th>
+                                        <th>ชื่อ</th>
+                                        <th>ราคา</th>
+                                        <th>ชิ้น</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {order.products.map((product, i) => (
-                                        <tr key={i}>
+                                    {order.products.map((product) => (
+                                        <tr key={product._id}>
                                             <td>{product.name}</td>
                                             <td>{product.price}</td>
                                             <td>{product.count}</td>
                                         </tr>
                                     ))}
                                     <tr>
-                                        <td colSpan={3}>ราคาสุทธิ : {" "}<b><u>{order.cartTotal}</u></b></td>
+                                        <td colSpan={3}>
+                                            ราคาสุทธิ : {' '}
+                                            <b>
+                                                <u>{order.cartTotal}</u>
+                                            </b>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
