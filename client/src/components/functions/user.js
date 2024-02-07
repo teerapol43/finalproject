@@ -62,8 +62,8 @@ export const emptyCart = async (authtoken) => {
     });
 };
 
-export const saveAddress = async (authtoken, address) => {
-    return await axios.post(process.env.REACT_APP_API + "/user/address", { address }, {
+export const saveAddress = async (authtoken, fulladdress) => {
+    return await axios.post(process.env.REACT_APP_API + "/user/address", { fulladdress }, {
         headers: {
             authtoken,
         },

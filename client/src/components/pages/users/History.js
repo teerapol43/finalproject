@@ -16,6 +16,12 @@ export const History = () => {
     }, []);
 
     const loadData = () => {
+        // Set loading state
+        setOrders({});
+        setName({});
+        setAddress({});
+        setPhoneNumber({});
+
         // Fetching orders, address, phone number, and name concurrently
         Promise.all([
             getOrders(user.user.token),
@@ -27,13 +33,15 @@ export const History = () => {
                 console.log("Orders response:", ordersRes.data); // Log orders response
                 setOrders(ordersRes.data);
                 setName(nameRes.data && typeof nameRes.data === 'object' ? nameRes.data : { name: nameRes.data });
-                setAddress(addressRes.data && typeof addressRes.data === 'object' ? addressRes.data : { fulladdress: addressRes.data });
+                setAddress(addressRes.data);
                 setPhoneNumber(phoneNumberRes.data && typeof phoneNumberRes.data === 'object' ? phoneNumberRes.data : { phoneNumber: phoneNumberRes.data });
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
+                // Handle errors, e.g., set an error state or display an error message
             });
     };
+
 
     return (
         <div className='col text-center'>
@@ -46,8 +54,13 @@ export const History = () => {
                         <div key={index} className='cart m-3'>
                             <p>สถานะสินค้า: {orders[index].orderstatus}</p>
                             <p>ชื่อ: {name.name}</p>
-                            <p>ที่อยู่: {address.fulladdress}</p>
-                            <p>เบอร์โทร: {phoneNumber.phoneNumber}</p>
+                            <p>ที่อยู่: {address && typeof address.fulladdress === 'object' ? address.fulladdress.houseNumber : address.fulladdress}</p>
+                            <p>ตำบล: {address && typeof address.fulladdress === 'object' ? address.fulladdress.subdistrict : ''}</p>
+                            <p>อำเภอ: {address && typeof address.fulladdress === 'object' ? address.fulladdress.district : ''}</p>
+                            <p>จังหวัด: {address && typeof address.fulladdress === 'object' ? address.fulladdress.province : ''}</p>
+                            <p>รหัสไปรษณีย์: {address && typeof address.fulladdress === 'object' ? address.fulladdress.zipcode : ''}</p>
+                            <p>เบอร์โทร: {phoneNumber && typeof phoneNumber.phoneNumber === 'object' ? phoneNumber.phoneNumber.someProperty : phoneNumber.phoneNumber}</p>
+
                             <table className='table table-bordered' style={{ marginBottom: '50px' }}>
                                 <thead>
                                     <tr>

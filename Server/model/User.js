@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Schema;
-const uesrSchema = mongoose.Schema({
+
+const userSchema = mongoose.Schema({
     username: {
         type: String,
     },
@@ -15,11 +16,14 @@ const uesrSchema = mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    fulladdress: String,
+    fulladdress: {
+        houseNumber: String,
+        subdistrict: String,
+        district: String,
+        province: String,
+        zipcode: String,
+    },
     phoneNumber: String,
-    province: String,
-    subdistrict: String,
-    zipCode: Number,
     name: String,
     cart: [{
         type: ObjectId,
@@ -31,4 +35,4 @@ const uesrSchema = mongoose.Schema({
     }]
 }, { timestamps: true })
 
-module.exports = mongoose.model('users', uesrSchema)
+module.exports = mongoose.model('users', userSchema)

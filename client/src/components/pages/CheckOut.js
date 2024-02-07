@@ -54,7 +54,7 @@ const Checkout = () => {
 
                 // Save address
                 const addressRes = await saveAddress(user.user.token, fullAddress);
-                console.log(addressRes.data);
+
                 if (addressRes.data.ok) {
                     toast.success('Address Saved');
                     setAddressSaved(true);
@@ -66,7 +66,7 @@ const Checkout = () => {
                 // Save phone number and name
                 const phoneRes = await savePhoneNumber(user.user.token, phoneNumber);
                 const nameRes = await saveName(user.user.token, name);
-
+                console.log(nameRes.data);
                 if (phoneRes.data.ok && nameRes.data.ok) {
                     toast.success('Phone Number and Name Saved');
                 } else {
