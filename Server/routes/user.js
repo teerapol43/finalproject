@@ -28,7 +28,13 @@ const {
     saveZipCode,
     getZipCode,
     saveSubdistrict,
-    getSubdistrict, } = require("../controllers/user");
+    saveEditedFullAddress,
+    getSubdistrict,
+    saveEditedName,
+    saveEditedPhoneNumber,
+    getUserName,
+    getPassWord,
+    resetPasswordUser } = require("../controllers/user");
 const { auth, adminCheck } = require("../Middleware/auth");
 
 
@@ -47,12 +53,16 @@ router.get("/users/:id", readUsers);
 //@Method    PUT
 //@Access    Private
 router.put("/users/:id", auth, adminCheck, updateUsers);
-
+//@Endpoint  http://localhost:5000/api/users/reset-password/:id
+//@Method    PUT
+//@Access    Private
+router.put("/users/reset-password/:id", auth, resetPasswordUser);
 //@Endpoint  http://localhost:5000/api/users/:id
 //@Method    DELETE
 //@Access    Private
 router.delete("/users/:id", auth, removeUsers);
-
+router.get("/user", auth, getUserName);
+router.get("/user", auth, getPassWord);
 
 //@Endpoint  http://localhost:5000/api/change-status
 //@Method    POST
@@ -67,14 +77,17 @@ router.post("/user/cart", auth, userCart);
 router.get("/user/cart", auth, getUserCart);
 router.delete("/user/cart", auth, emptyCart);
 router.post("/user/address", auth, saveFullAddress);
+router.post("/user/address", auth, saveEditedFullAddress);
 router.get("/user/address", auth, getFullAddress);
 router.post("/user/phone", auth, savePhoneNumber);
+router.post("/user/phone", auth, saveEditedPhoneNumber);
 router.get("/user/phone", auth, getPhoneNumber);
 router.post("/user/province", auth, saveProvince);
 router.get("/user/province", auth, getProvince);
 router.post("/user/zipcode", auth, saveZipCode);
 router.get("/user/zipcode", auth, getZipCode);
 router.post("/user/name", auth, saveName);
+router.post("/user/name", auth, saveEditedName);
 router.get("/user/name", auth, getName);
 router.post("/user/subdistrict", auth, saveSubdistrict);
 router.get("/user/subdistrict", auth, getSubdistrict);
