@@ -22,7 +22,10 @@ const OrderSchema = new mongoose.Schema(
         orderBy: {
             type: ObjectId,
             ref: 'users'
-        }
+        },
+        images: {
+            type: Array,
+        },
     },
     { timestamps: true }
 );
