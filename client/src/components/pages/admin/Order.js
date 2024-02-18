@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import SlipCard from '../../card/SlipCard';
 import { updateStatusOrder, getOrdersAdmin } from '../../functions/admin';
 import { toast } from 'react-toastify';
 
@@ -84,6 +85,7 @@ const Order = () => {
                                     </tr>
                                 </tbody>
                             </table>
+                            <SlipCard order={order} />
                         </div>
                     ))
                 )}
