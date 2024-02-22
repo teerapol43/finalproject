@@ -5,7 +5,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 // Layout
 import { CssBaseline } from "@mui/material";
 
-
 import FormProduct from "./components/FormProduct";
 import FormEditProduct from "./components/FormEditProduct";
 import Login from "./components/pages/auth/Login";
