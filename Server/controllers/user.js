@@ -600,3 +600,26 @@ exports.editAddress = async (req, res) => {
     res.status(500).send("Server Error while editing address");
   }
 };
+exports.removeAddress = async (req, res) => {
+  try {
+    const { addressId } = req.params;
+
+    // Find the address by ID and remove it
+    const removedAddress = await Address.findOneAndRemove({
+      _id: addressId,
+    }).exec();
+
+    // Check if the address was found and removed successfully
+    if (!removedAddress) {
+      return res.status(404).json({ error: "Address not found" });
+    }
+
+    // Optionally, you can update the user's reference to the address if needed
+    // Example: await User.findOneAndUpdate({ fulladdress: addressId }, { fulladdress: null }).exec();
+
+    res.status(200).send(removedAddress);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error while removing address");
+  }
+};

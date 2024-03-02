@@ -387,6 +387,7 @@ export const listAddress = async (authtoken, id) => {
   }
 };
 export const editAddress = async (authtoken, addressId, values) => {
+  console.log("api", values);
   try {
     return await axios.put(
       process.env.REACT_APP_API + "/user/address/" + addressId,
@@ -401,4 +402,14 @@ export const editAddress = async (authtoken, addressId, values) => {
     console.error("Error editing address:", error);
     throw error;
   }
+};
+export const removeAddress = async (authtoken, addressId) => {
+  return await axios.delete(
+    process.env.REACT_APP_API + "/user/address/" + addressId,
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
 };

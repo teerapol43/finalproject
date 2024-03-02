@@ -2,16 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { editAddress, listAddress } from "../functions/user";
+import { editAddress, listAddress, removeAddress } from "../functions/user";
 
 const initialstate = {
-  fulladdress: {
-    houseNumber: "",
-    subdistrict: "",
-    district: "",
-    province: "",
-    zipcode: "",
-  },
+  fulladdress: [
+    {
+      houseNumber: "",
+      subdistrict: "",
+      district: "",
+      province: "",
+      zipcode: "",
+    },
+  ],
   name: "",
   phoneNumber: "",
 };
@@ -57,7 +59,13 @@ const EditUserAddress = () => {
   };
 
   const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    setValues({
+      ...values,
+      fulladdress: {
+        ...values.fulladdress,
+        [e.target.name]: e.target.value,
+      },
+    });
   };
 
   const handleSubmit = (e) => {
@@ -65,6 +73,7 @@ const EditUserAddress = () => {
     setLoading(true);
     editAddress(user.user.token, values._id, values)
       .then((res) => {
+        console.log("edit", res);
         toast.success("อัปเดตสินค้าเรียบร้อยแล้ว");
         setLoading(false);
       })
@@ -74,7 +83,26 @@ const EditUserAddress = () => {
         setLoading(false);
       });
   };
-  console.log("ที่อยู่", values);
+  const handleRemoveAddress = async (id) => {
+    try {
+      if (window.confirm("คุณแน่ใจหรือไม่ว่าต้องการลบที่อยู่นี้?")) {
+        // Use the correct removeAddress function
+        removeAddress(user.user.token, id)
+          .then((res) => {
+            console.log(res);
+            toast.success("ลบที่อยู่เรียบร้อยแล้ว");
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error("เกิดข้อผิดพลาดในการลบที่อยู่");
+          });
+      }
+    } catch (error) {
+      console.error("Error removing address:", error);
+      toast.error("เกิดข้อผิดพลาดในการลบที่อยู่");
+    }
+  };
+  console.log("ที่อยู่", values.fulladdress);
   return (
     <div>
       <h2>Edit User Address</h2>
@@ -96,6 +124,13 @@ const EditUserAddress = () => {
               }}
             >
               {`${address.fulladdress.houseNumber}, ${address.fulladdress.subdistrict}, ${address.fulladdress.district}, ${address.fulladdress.province}, ${address.fulladdress.zipcode}, ${address.name}, ${address.phoneNumber}`}
+
+              <button
+                onClick={() => handleRemoveAddress(address._id)}
+                style={{ marginLeft: "10px" }}
+              >
+                Remove Address
+              </button>
             </li>
           ))}
         </ul>
@@ -106,7 +141,7 @@ const EditUserAddress = () => {
           House Number:
           <input
             type="text"
-            name="fulladdress.houseNumber"
+            name="houseNumber"
             value={values.fulladdress.houseNumber}
             onChange={handleChange}
           />
@@ -115,8 +150,8 @@ const EditUserAddress = () => {
           subdistrict:
           <input
             type="text"
-            name="fulladdress.subdistrict"
-            value={values.fulladdress?.subdistrict || ""}
+            name="subdistrict"
+            value={values.fulladdress?.subdistrict}
             onChange={handleChange}
           />
         </label>
@@ -124,8 +159,8 @@ const EditUserAddress = () => {
           district:
           <input
             type="text"
-            name="fulladdress.district"
-            value={values.fulladdress?.district || ""}
+            name="district"
+            value={values.fulladdress?.district}
             onChange={handleChange}
           />
         </label>
@@ -133,8 +168,8 @@ const EditUserAddress = () => {
           province:
           <input
             type="text"
-            name="fulladdress.province"
-            value={values.fulladdress?.province || ""}
+            name="province"
+            value={values.fulladdress?.province}
             onChange={handleChange}
           />
         </label>
@@ -142,8 +177,8 @@ const EditUserAddress = () => {
           zipcode:
           <input
             type="text"
-            name="fulladdress.zipcode"
-            value={values.fulladdress?.zipcode || ""}
+            name="zipcode"
+            value={values.fulladdress?.zipcode}
             onChange={handleChange}
           />
         </label>
